@@ -11,6 +11,8 @@ import {
   FileSpreadsheet,
   CheckCircle2,
   AlertCircle,
+  AlertTriangle,
+  Info,
   ArrowRight,
   ArrowLeft,
   Users,
@@ -236,74 +238,160 @@ export default function StudentImportPage() {
           </div>
 
           {/* Header Column Tag Reader Output Card */}
-          {tagMappings.length > 0 && (
-            <Card className="border-indigo-100 bg-indigo-50/20 p-4 space-y-3">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-indigo-100 pb-2">
-                <div className="flex items-center gap-2">
-                  <div className="h-7 w-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-xs">
-                    <Tag className="h-4 w-4" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                      Header Column Tag Reader Matrix
-                      <span className="text-[10px] bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-bold">
-                        Read Row #{headerRowIndex + 1}
-                      </span>
-                    </h4>
-                    <p className="text-xs text-slate-500">
-                      Read {tagMappings.length} column heading tag(s) first and mapped them to model target attributes.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 text-xs font-semibold">
-                  <span className="bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-md">
-                    ✓ {tagMappings.filter((t) => t.matched).length} Tags Auto-Mapped
-                  </span>
-                  {tagMappings.some((t) => !t.matched) && (
-                    <span className="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md">
-                      {tagMappings.filter((t) => !t.matched).length} Custom Tags
-                    </span>
-                  )}
-                </div>
-              </div>
+          {tagMappings.length > 0 && (() => {
+            const mappedFields = new Set(tagMappings.filter(t => t.matched).map(t => t.resolvedField));
+            const REQUIRED_COLS = [
+              { field: 'full_name', label: 'Full Name' },
+              { field: 'email', label: 'Email Address' },
+            ];
+            const RECOMMENDED_COLS = [
+              { field: 'student_id', label: 'Student ID / PRN' },
+              { field: 'date_of_birth', label: 'Date of Birth' },
+              { field: 'course_code', label: 'Course / Branch' },
+              { field: 'academic_year', label: 'Academic Year' },
+              { field: 'tenth_percentage', label: '10th Percentage' },
+              { field: 'twelfth_percentage', label: '12th Percentage' },
+            ];
+            const missingRequired = REQUIRED_COLS.filter(c => !mappedFields.has(c.field));
+            const missingRecommended = RECOMMENDED_COLS.filter(c => !mappedFields.has(c.field));
+            const unmappedCols = tagMappings.filter(t => !t.matched);
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 max-h-52 overflow-y-auto pr-1">
-                {tagMappings.map((tag, idx) => (
-                  <div
-                    key={idx}
-                    className={`p-2 rounded border text-xs flex items-center justify-between gap-2 ${
-                      tag.matched
-                        ? 'bg-white border-slate-200 text-slate-800 shadow-sm'
-                        : 'bg-slate-50 border-slate-200 text-slate-500'
-                    }`}
-                  >
-                    <div className="truncate flex-1 min-w-0">
-                      <span className="font-semibold text-slate-900 block truncate" title={tag.rawTag}>
-                        &quot;{tag.rawTag}&quot;
-                      </span>
-                      <span className="text-[10px] text-slate-400 block font-mono">Column Heading</span>
+            return (
+              <>
+                {/* Column Diagnostic Warnings */}
+                {(missingRequired.length > 0 || missingRecommended.length > 0 || unmappedCols.length > 0) && (
+                  <Card className="border-amber-200 bg-amber-50/30 p-4 space-y-3">
+                    <div className="flex items-center gap-2 border-b border-amber-100 pb-2">
+                      <AlertTriangle className="h-4 w-4 text-amber-600 shrink-0" />
+                      <h4 className="text-sm font-bold text-amber-900">Column Diagnostics</h4>
                     </div>
 
-                    <ArrowRight className="h-3 w-3 text-indigo-500 shrink-0" />
+                    {missingRequired.length > 0 && (
+                      <div className="space-y-1.5">
+                        <p className="text-xs font-bold text-red-700 flex items-center gap-1.5">
+                          <AlertCircle className="h-3.5 w-3.5" />
+                          Missing Required Columns — import will fail without these:
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {missingRequired.map((c) => (
+                            <span key={c.field} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-red-100 border border-red-200 text-red-800 text-xs font-semibold">
+                              <AlertCircle className="h-3 w-3" />
+                              {c.label}
+                              <code className="text-[10px] font-mono text-red-600 ml-1">({c.field})</code>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
-                    <div className="text-right truncate flex-1 min-w-0">
-                      <span
-                        className={`font-mono text-[11px] font-bold block truncate ${
-                          tag.matched ? 'text-indigo-600' : 'text-slate-500'
+                    {missingRecommended.length > 0 && (
+                      <div className="space-y-1.5">
+                        <p className="text-xs font-bold text-amber-700 flex items-center gap-1.5">
+                          <AlertTriangle className="h-3.5 w-3.5" />
+                          Missing Recommended Columns — risk prediction accuracy may be reduced:
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {missingRecommended.map((c) => (
+                            <span key={c.field} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-amber-100 border border-amber-200 text-amber-800 text-xs font-medium">
+                              <AlertTriangle className="h-3 w-3" />
+                              {c.label}
+                              <code className="text-[10px] font-mono text-amber-600 ml-1">({c.field})</code>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {unmappedCols.length > 0 && (
+                      <div className="space-y-1.5">
+                        <p className="text-xs font-bold text-slate-600 flex items-center gap-1.5">
+                          <Info className="h-3.5 w-3.5" />
+                          Unrecognized Columns — these will be ignored during import:
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {unmappedCols.map((c, i) => (
+                            <span key={i} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-slate-100 border border-slate-200 text-slate-600 text-xs font-mono">
+                              &quot;{c.rawTag}&quot;
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </Card>
+                )}
+
+                {/* Tag Mapping Matrix */}
+                <Card className="border-indigo-100 bg-indigo-50/20 p-4 space-y-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-indigo-100 pb-2">
+                    <div className="flex items-center gap-2">
+                      <div className="h-7 w-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-xs">
+                        <Tag className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                          Header Column Tag Reader Matrix
+                          <span className="text-[10px] bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-bold">
+                            Read Row #{headerRowIndex + 1}
+                          </span>
+                        </h4>
+                        <p className="text-xs text-slate-500">
+                          Read {tagMappings.length} column heading tag(s) first and mapped them to model target attributes.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs font-semibold">
+                      <span className="bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-md">
+                        ✓ {tagMappings.filter((t) => t.matched).length} Tags Auto-Mapped
+                      </span>
+                      {tagMappings.some((t) => !t.matched) && (
+                        <span className="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md">
+                          {tagMappings.filter((t) => !t.matched).length} Unrecognized
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 max-h-52 overflow-y-auto pr-1">
+                    {tagMappings.map((tag, idx) => (
+                      <div
+                        key={idx}
+                        className={`p-2 rounded border text-xs flex items-center justify-between gap-2 ${
+                          tag.matched
+                            ? 'bg-white border-slate-200 text-slate-800 shadow-sm'
+                            : 'bg-amber-50 border-amber-200 text-slate-500'
                         }`}
-                        title={tag.resolvedField || 'Unmapped'}
                       >
-                        {tag.resolvedField || 'Unmapped'}
-                      </span>
-                      <span className="text-[10px] text-emerald-600 font-bold">
-                        {tag.matched ? '✓ Mapped' : 'Custom'}
-                      </span>
-                    </div>
+                        <div className="truncate flex-1 min-w-0">
+                          <span className="font-semibold text-slate-900 block truncate" title={tag.rawTag}>
+                            &quot;{tag.rawTag}&quot;
+                          </span>
+                          <span className="text-[10px] text-slate-400 block font-mono">Column Heading</span>
+                        </div>
+
+                        <ArrowRight className="h-3 w-3 text-indigo-500 shrink-0" />
+
+                        <div className="text-right truncate flex-1 min-w-0">
+                          <span
+                            className={`font-mono text-[11px] font-bold block truncate ${
+                              tag.matched ? 'text-indigo-600' : 'text-amber-600'
+                            }`}
+                            title={tag.resolvedField || 'Unrecognized'}
+                          >
+                            {tag.resolvedField || 'Unrecognized'}
+                          </span>
+                          <span className={`text-[10px] font-bold ${
+                            tag.matched ? 'text-emerald-600' : 'text-amber-500'
+                          }`}>
+                            {tag.matched ? '✓ Mapped' : '⚠ Ignored'}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </Card>
-          )}
+                </Card>
+              </>
+            );
+          })()}
 
           {/* Error Table */}
           {errors.length > 0 && (
