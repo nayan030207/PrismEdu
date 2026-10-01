@@ -1,0 +1,61 @@
+<svg viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="600" fill="#F8FAFC" rx="24"/>
+  
+  <!-- Logo Emblem Group -->
+  <g transform="translate(200, 70) scale(1.0)">
+    <!-- Top Navy Curve of P -->
+    <path
+      d="M 68 32 C 105 32 175 32 175 90 C 175 145 125 152 98 152 L 98 126 C 115 126 147 122 147 90 C 147 58 105 58 68 58 Z"
+      fill="#0C182B"
+    />
+
+    <!-- Left 3D Prism Upper Light Facet -->
+    <path
+      d="M 68 32 L 140 100 L 68 178 Z"
+      fill="url(#prismTopFacetFull)"
+    />
+
+    <!-- Left 3D Prism Lower Dark Facet -->
+    <path
+      d="M 68 95 L 140 100 L 68 178 Z"
+      fill="url(#prismBottomFacetFull)"
+    />
+
+    <!-- Graduation Cap in Negative Space -->
+    <g transform="translate(92, 58) scale(0.95)">
+      <path d="M 22 8 L 41 17.5 L 22 27 L 3 17.5 Z" fill="#0C182B" />
+      <path d="M 12 21 L 12 28.5 C 12 33.5 32 33.5 32 28.5 L 32 21 Z" fill="#0C182B" />
+      <circle cx="37" cy="27" r="2.5" fill="#0C182B" />
+      <line x1="36" y1="18" x2="37" y2="25" stroke="#0C182B" stroke-width="1.5" stroke-linecap="round" />
+    </g>
+  </g>
+
+  <!-- PRISM-ED Title Text -->
+  <g transform="translate(300, 370)" text-anchor="middle">
+    <text font-family="Inter, system-ui, sans-serif" font-weight="900" font-size="64" letter-spacing="4">
+      <tspan fill="#0C182B">PRISM-</tspan><tspan fill="#8B5CF6">ED</tspan>
+    </text>
+  </g>
+
+  <!-- Subtitle Text -->
+  <g transform="translate(300, 440)" text-anchor="middle">
+    <text font-family="Inter, system-ui, sans-serif" font-weight="500" font-size="18" fill="#475569" letter-spacing="1">
+      Predictive Risk &amp; Intervention System
+    </text>
+    <text font-family="Inter, system-ui, sans-serif" font-weight="500" font-size="18" fill="#475569" letter-spacing="1" y="30">
+      for Monitoring <tspan fill="#8B5CF6" font-weight="700">ED</tspan>ucation
+    </text>
+  </g>
+
+  <defs>
+    <linearGradient id="prismTopFacetFull" x1="68" y1="32" x2="140" y2="100" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#C084FC" />
+      <stop offset="60%" stop-color="#8B5CF6" />
+      <stop offset="100%" stop-color="#7C3AED" />
+    </linearGradient>
+    <linearGradient id="prismBottomFacetFull" x1="68" y1="95" x2="140" y2="178" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7C3AED" />
+      <stop offset="100%" stop-color="#4C1D95" />
+    </linearGradient>
+  </defs>
+</svg>

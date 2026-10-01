@@ -1,0 +1,48 @@
+<svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Top Navy Curve of P -->
+  <path
+    d="M 68 32 C 105 32 175 32 175 90 C 175 145 125 152 98 152 L 98 126 C 115 126 147 122 147 90 C 147 58 105 58 68 58 Z"
+    fill="#0C182B"
+  />
+
+  <!-- Left 3D Prism Upper Light Facet -->
+  <path
+    d="M 68 32 L 140 100 L 68 178 Z"
+    fill="url(#prismTopFacet)"
+  />
+
+  <!-- Left 3D Prism Lower Dark Facet -->
+  <path
+    d="M 68 95 L 140 100 L 68 178 Z"
+    fill="url(#prismBottomFacet)"
+  />
+
+  <!-- Graduation Cap in Negative Space -->
+  <g transform="translate(92, 58) scale(0.95)">
+    <!-- Top Diamond -->
+    <path
+      d="M 22 8 L 41 17.5 L 22 27 L 3 17.5 Z"
+      fill="#0C182B"
+    />
+    <!-- Cap Skull Base -->
+    <path
+      d="M 12 21 L 12 28.5 C 12 33.5 32 33.5 32 28.5 L 32 21 Z"
+      fill="#0C182B"
+    />
+    <!-- Tassel -->
+    <circle cx="37" cy="27" r="2.5" fill="#0C182B" />
+    <line x1="36" y1="18" x2="37" y2="25" stroke="#0C182B" stroke-width="1.5" stroke-linecap="round" />
+  </g>
+
+  <defs>
+    <linearGradient id="prismTopFacet" x1="68" y1="32" x2="140" y2="100" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#C084FC" />
+      <stop offset="60%" stop-color="#8B5CF6" />
+      <stop offset="100%" stop-color="#7C3AED" />
+    </linearGradient>
+    <linearGradient id="prismBottomFacet" x1="68" y1="95" x2="140" y2="178" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7C3AED" />
+      <stop offset="100%" stop-color="#4C1D95" />
+    </linearGradient>
+  </defs>
+</svg>
