@@ -41,12 +41,7 @@ export default function StudentSupportPage() {
     },
   ];
 
-  const suggestedSupportQuestions = [
-    'How do I book a confidential session with Dr. Aruna Sharma?',
-    'I am feeling stressed about semester exams and attendance',
-    'Where is the on-campus student wellness centre located?',
-    'What emergency student helpline numbers are available?',
-  ];
+  const suggestedSupportQuestions: string[] = [];
 
   if (isLoading) {
     return <div className="p-12 text-center text-xs text-slate-400">Loading support resources...</div>;

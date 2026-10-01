@@ -30,28 +30,12 @@ export default function ImportAttendancePage() {
   const handleDownloadTemplate = () => {
     const templateData = [
       {
-        'Student ID': 'STU1024',
-        'Name': 'Rahul Sharma',
-        'Email': 'rahul.sharma@prismedu.com',
-        'Total Classes': 65,
-        'Classes Attended': 48,
-        'Attendance': '73.85%',
-      },
-      {
-        'Student ID': 'STU2048',
-        'Name': 'Neha Sharma',
-        'Email': 'neha.sharma@prismedu.com',
-        'Total Classes': 65,
-        'Classes Attended': 57,
-        'Attendance': '87.69%',
-      },
-      {
-        'Student ID': 'STU3096',
-        'Name': 'Arjun More',
-        'Email': 'arjun.more@prismedu.com',
-        'Total Classes': 90,
-        'Classes Attended': 74,
-        'Attendance': '82.22%',
+        'Student ID': 'STU0000',
+        'Name': 'Student Name',
+        'Email': 'student@example.com',
+        'Total Classes': 0,
+        'Classes Attended': 0,
+        'Attendance': '0%',
       },
     ];
 

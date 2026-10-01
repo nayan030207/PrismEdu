@@ -55,12 +55,7 @@ export default function StudentAnalysisPage({ params }: { params: { id: string }
   const summary = data?.summary;
   const isHighRisk = prediction?.riskCategory === 'HIGH' || prediction?.riskCategory === 'CRITICAL';
 
-  const gpaTrend = [
-    { sem: 'Sem 1', gpa: 8.2 },
-    { sem: 'Sem 2', gpa: 8.0 },
-    { sem: 'Sem 3', gpa: 7.4 },
-    { sem: 'Sem 4 (Current)', gpa: 6.8 },
-  ];
+  const gpaTrend: any[] = [];
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-12">

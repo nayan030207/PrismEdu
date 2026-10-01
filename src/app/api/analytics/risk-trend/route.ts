@@ -11,12 +11,7 @@ export async function GET(req: Request) {
   const timeframe = searchParams.get('timeframe') || '30d';
 
   // Computed temporal telemetry trend
-  const trend = [
-    { date: 'Week 1', averageRisk: 28.4, highRiskCount: 1, criticalCount: 0 },
-    { date: 'Week 2', averageRisk: 31.2, highRiskCount: 1, criticalCount: 1 },
-    { date: 'Week 3', averageRisk: 35.8, highRiskCount: 2, criticalCount: 1 },
-    { date: 'Current', averageRisk: 34.0, highRiskCount: 2, criticalCount: 1 },
-  ];
+  const trend: any[] = [];
 
   return NextResponse.json({ timeframe, trend });
 }

@@ -14,34 +14,7 @@ export interface DemoFaculty {
   status: 'active' | 'inactive';
 }
 
-export const INITIAL_DEMO_FACULTY: DemoFaculty[] = [
-  {
-    id: 'f1111111-1111-1111-1111-111111111111',
-    employee_id: 'FAC-CSE-01',
-    full_name: 'Dr. Sarah Mitchell',
-    email: 'faculty1@prismedu.com',
-    mobile: '+91 9876543210',
-    date_of_birth: '1982-05-03',
-    initialPassword: 'password@123',
-    department: 'Computer Science and Engineering',
-    designation: 'Associate Professor',
-    specialization: 'Database Systems & Machine Learning',
-    status: 'active',
-  },
-  {
-    id: 'f2222222-2222-2222-2222-222222222222',
-    employee_id: 'FAC-IT-02',
-    full_name: 'Prof. David Reynolds',
-    email: 'faculty2@prismedu.com',
-    mobile: '+91 9876543211',
-    date_of_birth: '1980-09-14',
-    initialPassword: 'Faculty2@1409',
-    department: 'Information Technology',
-    designation: 'Assistant Professor',
-    specialization: 'Computer Networks & Distributed Systems',
-    status: 'active',
-  },
-];
+export const INITIAL_DEMO_FACULTY: DemoFaculty[] = [];
 
 declare global {
   // eslint-disable-next-line no-var

@@ -100,35 +100,24 @@ export default function AdminDashboardPage() {
   };
 
   // Primary 9-Metric Statistical Overview Chart Data (plotting all cards)
+  // Primary 9-Metric Statistical Overview Chart Data (plotting all cards)
   const allMetricsChartData = [
-    { metric: 'Total Students', count: stats.totalStudents || 16, fill: '#6366f1', filterId: 'all' },
-    { metric: 'Faculty', count: stats.totalFaculty || 2, fill: '#3b82f6', filterId: 'all' },
-    { metric: 'Req. Attention', count: stats.studentsRequiringAttention || 6, fill: '#f59e0b', filterId: 'attention' },
-    { metric: 'Interventions', count: stats.interventionSummary?.total || 2, fill: '#10b981', filterId: 'interventions' },
-    { metric: 'Academic', count: stats.academicConcerns || 4, fill: '#ef4444', filterId: 'academic' },
-    { metric: 'Attendance', count: stats.attendanceConcerns || 6, fill: '#f59e0b', filterId: 'attendance' },
-    { metric: 'Financial', count: stats.financialSupportIndicators || 1, fill: '#10b981', filterId: 'financial' },
-    { metric: 'Personal', count: stats.personalSupportIndicators || 1, fill: '#a855f7', filterId: 'personal' },
-    { metric: 'Career', count: stats.careerSupportIndicators || 16, fill: '#6366f1', filterId: 'career' },
+    { metric: 'Total Students', count: stats.totalStudents || 0, fill: '#6366f1', filterId: 'all' },
+    { metric: 'Faculty', count: stats.totalFaculty || 0, fill: '#3b82f6', filterId: 'all' },
+    { metric: 'Req. Attention', count: stats.studentsRequiringAttention || 0, fill: '#f59e0b', filterId: 'attention' },
+    { metric: 'Interventions', count: stats.interventionSummary?.total || 0, fill: '#10b981', filterId: 'interventions' },
+    { metric: 'Academic', count: stats.academicConcerns || 0, fill: '#ef4444', filterId: 'academic' },
+    { metric: 'Attendance', count: stats.attendanceConcerns || 0, fill: '#f59e0b', filterId: 'attendance' },
+    { metric: 'Financial', count: stats.financialSupportIndicators || 0, fill: '#10b981', filterId: 'financial' },
+    { metric: 'Personal', count: stats.personalSupportIndicators || 0, fill: '#a855f7', filterId: 'personal' },
+    { metric: 'Career', count: stats.careerSupportIndicators || 0, fill: '#6366f1', filterId: 'career' },
   ];
 
   // Risk distribution pie chart data
-  const riskPieData = [
-    { name: 'Low Risk', value: 10, color: '#10b981', filterId: 'low' },
-    { name: 'Moderate Risk', value: 3, color: '#f59e0b', filterId: 'moderate' },
-    { name: 'High Risk', value: 2, color: '#f97316', filterId: 'high' },
-    { name: 'Critical Risk', value: 1, color: '#ef4444', filterId: 'critical' },
-  ];
+  const riskPieData: any[] = [];
 
   // Predictive risk trend
-  const riskTrendData = [
-    { month: 'Apr', averageRisk: 28.5, highRiskCount: 1 },
-    { month: 'May', averageRisk: 26.8, highRiskCount: 1 },
-    { month: 'Jun', averageRisk: 25.4, highRiskCount: 2 },
-    { month: 'Jul', averageRisk: 24.9, highRiskCount: 2 },
-    { month: 'Aug', averageRisk: 23.8, highRiskCount: 2 },
-    { month: 'Sep', averageRisk: 22.4, highRiskCount: 3 },
-  ];
+  const riskTrendData: any[] = [];
 
   // Filter students based on active Category and Search Query
   const filteredStudents = students.filter((s) => {

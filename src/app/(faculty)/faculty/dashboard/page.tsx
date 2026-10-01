@@ -39,23 +39,8 @@ import {
 
 import { DashboardSkeleton } from '@/components/ui/dashboard-skeleton';
 
-const MONTHLY_DROPOUT_TREND = [
-  { month: 'Apr', dropoutRiskPct: 18.5, predictedRate: 17.2 },
-  { month: 'May', dropoutRiskPct: 16.8, predictedRate: 15.9 },
-  { month: 'Jun', dropoutRiskPct: 15.4, predictedRate: 14.8 },
-  { month: 'Jul', dropoutRiskPct: 14.9, predictedRate: 14.1 },
-  { month: 'Aug', dropoutRiskPct: 13.8, predictedRate: 13.2 },
-  { month: 'Sep', dropoutRiskPct: 12.4, predictedRate: 11.8 },
-];
-
-const BRANCH_RISK_DISTRIBUTION = [
-  { branch: 'CSE', highRisk: 2, moderate: 4, stable: 18 },
-  { branch: 'IT', highRisk: 1, moderate: 3, stable: 14 },
-  { branch: 'CIVIL', highRisk: 3, moderate: 5, stable: 10 },
-  { branch: 'MECH', highRisk: 2, moderate: 4, stable: 12 },
-  { branch: 'EE', highRisk: 2, moderate: 3, stable: 11 },
-  { branch: 'ENTC', highRisk: 1, moderate: 4, stable: 13 },
-];
+const MONTHLY_DROPOUT_TREND: any[] = [];
+const BRANCH_RISK_DISTRIBUTION: any[] = [];
 
 export default function FacultyDashboardPage() {
   const [data, setData] = React.useState<any>(null);

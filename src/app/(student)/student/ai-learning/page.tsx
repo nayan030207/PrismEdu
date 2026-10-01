@@ -6,13 +6,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Bot, BookOpen, ShieldCheck, HelpCircle, CheckCircle2, Sparkles, FileText, Code2, Cpu } from 'lucide-react';
 
 export default function AILearningAgentPage() {
-  const suggestedAcademicQuestions = [
-    'Explain Database Normalization from 1NF to BCNF with examples',
-    'How does Dijkstra algorithm find the shortest path in a graph?',
-    'What are ACID properties in database transactions and why is Isolation needed?',
-    'What is the difference between 3NF and BCNF?',
-    'Explain process scheduling and deadlocks in Operating Systems',
-  ];
+  const suggestedAcademicQuestions: string[] = [];
 
   return (
     <div className="space-y-6">
