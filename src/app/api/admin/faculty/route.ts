@@ -38,7 +38,17 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json();
-    const { full_name, email, employee_id, designation, specialization, department_id, mobile } = body;
+    const {
+      full_name,
+      email,
+      employee_id,
+      designation,
+      specialization,
+      department_id,
+      mobile,
+      date_of_birth,
+      password: adminSetPassword,
+    } = body;
 
     if (!full_name || !email) {
       return NextResponse.json({ error: 'Full name and email are required' }, { status: 400 });
@@ -48,18 +58,39 @@ export async function POST(req: Request) {
     const isLiveDb = supabaseUrl && !supabaseUrl.includes('your-project') && !supabaseUrl.includes('test.supabase');
 
     const { generateDefaultPassword } = require('@/lib/auth/password');
-    const initialPassword = generateDefaultPassword(email, body.date_of_birth || body.dob, full_name);
+
+    // Use admin-provided password if given (and meets min length), otherwise auto-generate
+    const initialPassword =
+      adminSetPassword && adminSetPassword.trim().length >= 6
+        ? adminSetPassword.trim()
+        : generateDefaultPassword(email, date_of_birth || body.dob, full_name);
+
+    // Register the password in the credential store immediately so it works on first login
+    const credMap = (globalThis as any).__PRISM_AUTH_CREDENTIALS;
+    const normEmail = email.toLowerCase().trim();
+    if (credMap) {
+      const existing = credMap.get(normEmail) || { email: normEmail };
+      existing.customPassword = initialPassword;
+      credMap.set(normEmail, existing);
+    } else {
+      // Initialize the map
+      (globalThis as any).__PRISM_AUTH_CREDENTIALS = new Map<string, any>();
+      (globalThis as any).__PRISM_AUTH_CREDENTIALS.set(normEmail, {
+        email: normEmail,
+        customPassword: initialPassword,
+      });
+    }
 
     if (isLiveDb) {
       try {
         const supabase = createSupabaseServiceClient();
         const passwordHash = await hashPassword(initialPassword);
 
-        // Create user
+        // Create user record
         const { data: newUser, error: userError } = await supabase
           .from('users')
           .insert({
-            email: email.toLowerCase().trim(),
+            email: normEmail,
             password_hash: passwordHash,
             role: 'faculty',
             status: 'active',
@@ -76,7 +107,7 @@ export async function POST(req: Request) {
             user_id: newUser.id,
             employee_id: employee_id || `FAC-${Math.floor(100 + Math.random() * 900)}`,
             full_name,
-            email: email.toLowerCase().trim(),
+            email: normEmail,
             mobile,
             department_id,
             designation,
@@ -91,11 +122,11 @@ export async function POST(req: Request) {
         addDemoFaculty({
           employee_id: newFaculty.employee_id,
           full_name,
-          email,
+          email: normEmail,
           mobile,
           designation,
           specialization,
-          date_of_birth: body.date_of_birth || body.dob,
+          date_of_birth: date_of_birth || body.dob,
           initialPassword,
         });
 
@@ -109,11 +140,11 @@ export async function POST(req: Request) {
     const newFaculty = addDemoFaculty({
       employee_id,
       full_name,
-      email,
+      email: normEmail,
       mobile,
       designation,
       specialization,
-      date_of_birth: body.date_of_birth || body.dob,
+      date_of_birth: date_of_birth || body.dob,
       initialPassword,
     });
 

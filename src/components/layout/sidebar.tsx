@@ -166,6 +166,8 @@ export function Sidebar({ role, userName, userEmail }: SidebarProps) {
           isOpen={isResetOpen}
           onClose={() => setIsResetOpen(false)}
           defaultEmail={userEmail}
+          isAuthenticated={true}
+          userRole={role}
         />
       </div>
     </aside>

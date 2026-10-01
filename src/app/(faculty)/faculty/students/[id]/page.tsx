@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { InsightBadge } from '@/components/ui/insight-badge';
@@ -9,17 +10,10 @@ import { TrendLineChart } from '@/components/charts/trend-line-chart';
 import { InterventionCard } from '@/components/interventions/intervention-card';
 import { InterventionForm } from '@/components/interventions/intervention-form';
 import {
-  User,
   ArrowLeft,
   Plus,
   AlertTriangle,
-  Clock,
-  BookOpen,
-  CalendarCheck,
-  TrendingDown,
-  FileCheck,
-  HelpCircle,
-  Sparkles,
+  Edit,
 } from 'lucide-react';
 import type { InsightLevel, InterventionStatus } from '@/lib/types';
 
@@ -128,10 +122,18 @@ export default function FacultyStudentInsightPage() {
           </div>
         </div>
 
-        <Button onClick={() => setIsInterventionOpen(true)} className="gap-1.5 text-xs">
-          <Plus className="h-4 w-4" />
-          <span>Create Targeted Intervention</span>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Link href={`/faculty/students/${studentId}/edit`}>
+            <Button variant="outline" className="gap-1.5 text-xs">
+              <Edit className="h-4 w-4" />
+              <span>Edit Profile</span>
+            </Button>
+          </Link>
+          <Button onClick={() => setIsInterventionOpen(true)} className="gap-1.5 text-xs">
+            <Plus className="h-4 w-4" />
+            <span>Create Targeted Intervention</span>
+          </Button>
+        </div>
       </div>
 
       {/* Actionable Student Indicators (Section 7 Exact Requirements) */}
@@ -139,28 +141,40 @@ export default function FacultyStudentInsightPage() {
         <Card className="p-4 border-slate-200">
           <span className="text-[10px] font-bold uppercase text-slate-400">Academic Status</span>
           <div className="mt-2">
-            <InsightBadge level={student.insight?.academic_level || 'attention_required'} category="academic" />
+            <InsightBadge
+              level={(student.insight?.academic_level || student.insight?.academic || 'good') as InsightLevel}
+              category="academic"
+            />
           </div>
         </Card>
 
         <Card className="p-4 border-slate-200">
           <span className="text-[10px] font-bold uppercase text-slate-400">Attendance / Engagement</span>
           <div className="mt-2">
-            <InsightBadge level={student.insight?.attendance_level || 'declining'} category="attendance" />
+            <InsightBadge
+              level={(student.insight?.attendance_level || student.insight?.attendance || 'good') as InsightLevel}
+              category="attendance"
+            />
           </div>
         </Card>
 
         <Card className="p-4 border-slate-200">
           <span className="text-[10px] font-bold uppercase text-slate-400">Financial Support</span>
           <div className="mt-2">
-            <InsightBadge level={student.insight?.financial_level || 'attention_required'} category="financial" />
+            <InsightBadge
+              level={(student.insight?.financial_level || student.insight?.financial || 'good') as InsightLevel}
+              category="financial"
+            />
           </div>
         </Card>
 
         <Card className="p-4 border-slate-200">
           <span className="text-[10px] font-bold uppercase text-slate-400">Career Trajectory</span>
           <div className="mt-2">
-            <InsightBadge level={student.insight?.career_level || 'good'} category="career" />
+            <InsightBadge
+              level={(student.insight?.career_level || student.insight?.career || 'good') as InsightLevel}
+              category="career"
+            />
           </div>
         </Card>
       </div>

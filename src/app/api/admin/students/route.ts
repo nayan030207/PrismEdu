@@ -64,7 +64,7 @@ export async function GET(req: Request) {
 
 export async function PATCH(req: Request) {
   const session = await getSession();
-  if (!session || session.role !== 'admin') {
+  if (!session || (session.role !== 'admin' && session.role !== 'faculty')) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
   }
 

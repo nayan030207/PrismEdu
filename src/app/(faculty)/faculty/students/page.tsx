@@ -21,7 +21,7 @@ export default function FacultyStudentsPage() {
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
-    fetch('/api/admin/students')
+    fetch('/api/students')
       .then((res) => res.json())
       .then((data) => {
         setStudents(data.students || []);
