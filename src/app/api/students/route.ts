@@ -24,6 +24,7 @@ export async function POST(req: Request) {
 
     // Also add to demo store for immediate offline visibility
     const newStudent = addDemoStudent({
+      ...body,
       student_id: body.student_id,
       full_name: body.full_name,
       email: body.email,
@@ -37,6 +38,7 @@ export async function POST(req: Request) {
   } catch {
     // If live DB error, provide robust demo fallback and add to store
     const newStudent = addDemoStudent({
+      ...body,
       student_id: body.student_id,
       full_name: body.full_name,
       email: body.email,

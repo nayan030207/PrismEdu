@@ -192,8 +192,8 @@ export function PasswordResetModal({
           </div>
         </div>
 
-        {/* Mode Toggle (only for authenticated faculty/student) */}
-        {isAuthenticated && (userRole === 'faculty' || userRole === 'student') && (
+        {/* Mode Toggle (only for authenticated student) */}
+        {isAuthenticated && userRole === 'student' && (
           <div className="flex gap-1 bg-slate-100 p-1 rounded-lg mb-4">
             <button
               type="button"
