@@ -1,4 +1,6 @@
-﻿-- =============================================================================
+
+
+-- ==============================================================================-- =============================================================================
 -- PRISM-EDU  |  Migration 001 — Initial Schema
 -- =============================================================================
 
@@ -493,7 +495,8 @@ CREATE TRIGGER trg_admission_profiles_updated
 CREATE TRIGGER trg_interventions_updated
   BEFORE UPDATE ON interventions
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
-﻿-- =============================================================================
+
+-- =============================================================================
 -- PRISM-EDU  |  Migration 002 — Row Level Security
 -- =============================================================================
 -- Strategy:
@@ -937,6 +940,7 @@ CREATE POLICY audit_logs_select_admin ON audit_logs
 
 CREATE POLICY audit_logs_insert ON audit_logs
   FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
+
 -- =============================================================================
 -- PRISM-EDU | Migration 003 — Additional Performance Indexes
 -- =============================================================================
@@ -969,6 +973,7 @@ CREATE INDEX IF NOT EXISTS idx_resource_embeddings_resource ON resource_embeddin
 
 -- Indexes for predictions and models
 CREATE INDEX IF NOT EXISTS idx_predictions_model ON predictions(model_version_id);
+
 -- =============================================================================
 -- PRISM-EDU Comprehensive Seed Data
 -- =============================================================================
