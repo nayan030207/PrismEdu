@@ -49,7 +49,7 @@ export async function GET(req: Request) {
     const snapshot: FeatureSnapshot = await featureEngineeringService.generateFeatureSnapshot(student.id);
 
     const riskScore = prediction.riskProbability;
-    const previousRiskScore = prediction.previousRiskProbability ?? (riskScore - Math.random() * 20); // Fallback if no history
+    const previousRiskScore = prediction.previousRiskProbability ?? Math.max(0, riskScore - (snapshot.attendanceChange < 0 ? 12 : 2));
     const riskChange = riskScore - previousRiskScore;
 
     const currentAttendance = snapshot.attendancePercentage;

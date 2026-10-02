@@ -167,8 +167,18 @@ export function addDemoStudent(student: Partial<DemoStudent> & { full_name: stri
 
   const current = globalThis.__PRISM_DEMO_STUDENTS || [];
   const existingIdx = current.findIndex(
-    (s) => s.student_id === newStudent.student_id || s.email === newStudent.email
+    (s) => s.student_id === newStudent.student_id || s.email.toLowerCase().trim() === newStudent.email.toLowerCase().trim()
   );
+
+  // Invalidate predictions cache so graphs recalculate dynamically
+  try {
+    const { predictiveMlService } = require('@/lib/services/predictive-ml.service');
+    const { featureEngineeringService } = require('@/lib/services/feature-engineering.service');
+    predictiveMlService.clearPredictionCache(newStudent.id);
+    featureEngineeringService.clearSnapshotCache(newStudent.id);
+  } catch {
+    // ignore
+  }
 
   if (existingIdx !== -1) {
     current[existingIdx] = { ...current[existingIdx], ...newStudent };
@@ -219,5 +229,16 @@ export function updateDemoStudent(idOrStudentId: string, updates: Partial<DemoSt
     },
   };
 
+  // Invalidate predictions cache so graphs recalculate dynamically
+  try {
+    const { predictiveMlService } = require('@/lib/services/predictive-ml.service');
+    const { featureEngineeringService } = require('@/lib/services/feature-engineering.service');
+    predictiveMlService.clearPredictionCache(current[index].id);
+    featureEngineeringService.clearSnapshotCache(current[index].id);
+  } catch {
+    // ignore
+  }
+
   return current[index];
 }
+

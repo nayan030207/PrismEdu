@@ -211,14 +211,20 @@ export class StudentService {
     const { addDemoStudent } = await import('@/lib/store/demo-students');
     const { addDemoFaculty } = await import('@/lib/store/demo-faculty');
     const { registerUserAuthCredential } = await import('@/lib/store/auth-credentials');
+    const { resolveBranchCourseDepartment } = await import('@/lib/utils/branch-resolver');
+
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const isLiveDb = !!(supabaseUrl && !supabaseUrl.includes('your-project') && !supabaseUrl.includes('test.supabase'));
 
     for (const row of rows) {
       try {
         // Register user in Auth Platform with User ID = email and Password = Name@dob
         const initialPass = registerUserAuthCredential(row.email, row.date_of_birth, row.full_name);
 
-        // Sync directly to Supabase Auth Platform (auth.users)
-        await syncUserToSupabaseAuth(row.email, initialPass, row.full_name, row.role || 'student');
+        // Sync to Supabase Auth Platform only if live DB is configured
+        if (isLiveDb) {
+          syncUserToSupabaseAuth(row.email, initialPass, row.full_name, row.role || 'student').catch(() => {});
+        }
 
         if (row.role === 'faculty' || row.role === 'admin') {
           const facultyEntry = addDemoFaculty({
@@ -239,9 +245,11 @@ export class StudentService {
             tempPassword: facultyEntry.initialPassword,
           });
         } else {
-          // Attempt database registration
-          try {
-            const res = await this.registerStudentManually({
+          const branchInfo = resolveBranchCourseDepartment(row.course_code, row.department_code);
+
+          // If live DB is connected, register in DB asynchronously / in parallel
+          if (isLiveDb) {
+            this.registerStudentManually({
               student_id: row.student_id,
               full_name: row.full_name,
               email: row.email,
@@ -274,96 +282,51 @@ export class StudentService {
               guardian_name: row.guardian_name,
               guardian_mobile: row.guardian_mobile,
               faculty_id: facultyId,
-            });
-
-            const { resolveBranchCourseDepartment } = await import('@/lib/utils/branch-resolver');
-            const branchInfo = resolveBranchCourseDepartment(row.course_code, row.department_code);
-
-            const demoStudent = addDemoStudent({
-              student_id: row.student_id,
-              full_name: row.full_name,
-              email: row.email,
-              mobile: row.mobile,
-              date_of_birth: row.date_of_birth ? String(row.date_of_birth) : undefined,
-              gender: row.gender,
-              course: branchInfo.course,
-              department: branchInfo.department,
-              academic_year: row.academic_year,
-              tenth_school_name: row.tenth_school_name,
-              tenth_board: row.tenth_board,
-              tenth_passing_year: row.tenth_passing_year,
-              tenth_percentage: row.tenth_percentage,
-              twelfth_school_name: row.twelfth_school_name,
-              twelfth_board: row.twelfth_board,
-              twelfth_passing_year: row.twelfth_passing_year,
-              physics_marks: row.physics_marks,
-              chemistry_marks: row.chemistry_marks,
-              maths_marks: row.maths_marks,
-              twelfth_percentage: row.twelfth_percentage,
-              jee_main_percentile: row.jee_main_percentile,
-              jee_main_rank: row.jee_main_rank,
-              mht_cet_percentile: row.mht_cet_percentile,
-              mht_cet_rank: row.mht_cet_rank,
-              category_rank: row.category_rank,
-              cap_round_allotment: row.cap_round_allotment,
-              family_income: row.family_income,
-              financial_assistance: row.financial_assistance,
-              guardian_name: row.guardian_name,
-              guardian_mobile: row.guardian_mobile,
-            });
-
-            created.push({
-              student_id: demoStudent.student_id,
-              full_name: demoStudent.full_name,
-              email: demoStudent.email,
-              role: 'student',
-              tempPassword: demoStudent.initialPassword,
-            });
-          } catch {
-            const { resolveBranchCourseDepartment } = await import('@/lib/utils/branch-resolver');
-            const branchInfo = resolveBranchCourseDepartment(row.course_code, row.department_code);
-
-            const demoStudent = addDemoStudent({
-              student_id: row.student_id,
-              full_name: row.full_name,
-              email: row.email,
-              mobile: row.mobile,
-              date_of_birth: row.date_of_birth ? String(row.date_of_birth) : undefined,
-              gender: row.gender,
-              course: branchInfo.course,
-              department: branchInfo.department,
-              academic_year: row.academic_year,
-              tenth_school_name: row.tenth_school_name,
-              tenth_board: row.tenth_board,
-              tenth_passing_year: row.tenth_passing_year,
-              tenth_percentage: row.tenth_percentage,
-              twelfth_school_name: row.twelfth_school_name,
-              twelfth_board: row.twelfth_board,
-              twelfth_passing_year: row.twelfth_passing_year,
-              physics_marks: row.physics_marks,
-              chemistry_marks: row.chemistry_marks,
-              maths_marks: row.maths_marks,
-              twelfth_percentage: row.twelfth_percentage,
-              jee_main_percentile: row.jee_main_percentile,
-              jee_main_rank: row.jee_main_rank,
-              mht_cet_percentile: row.mht_cet_percentile,
-              mht_cet_rank: row.mht_cet_rank,
-              category_rank: row.category_rank,
-              cap_round_allotment: row.cap_round_allotment,
-              family_income: row.family_income,
-              financial_assistance: row.financial_assistance,
-              guardian_name: row.guardian_name,
-              guardian_mobile: row.guardian_mobile,
-            });
-
-            created.push({
-              student_id: demoStudent.student_id,
-              full_name: demoStudent.full_name,
-              email: demoStudent.email,
-              role: 'student',
-              tempPassword: demoStudent.initialPassword,
-            });
+            }).catch(() => {});
           }
+
+          const demoStudent = addDemoStudent({
+            student_id: row.student_id,
+            full_name: row.full_name,
+            email: row.email,
+            mobile: row.mobile,
+            date_of_birth: row.date_of_birth ? String(row.date_of_birth) : undefined,
+            gender: row.gender,
+            course: branchInfo.course,
+            department: branchInfo.department,
+            academic_year: row.academic_year,
+            tenth_school_name: row.tenth_school_name,
+            tenth_board: row.tenth_board,
+            tenth_passing_year: row.tenth_passing_year,
+            tenth_percentage: row.tenth_percentage,
+            twelfth_school_name: row.twelfth_school_name,
+            twelfth_board: row.twelfth_board,
+            twelfth_passing_year: row.twelfth_passing_year,
+            physics_marks: row.physics_marks,
+            chemistry_marks: row.chemistry_marks,
+            maths_marks: row.maths_marks,
+            twelfth_percentage: row.twelfth_percentage,
+            jee_main_percentile: row.jee_main_percentile,
+            jee_main_rank: row.jee_main_rank,
+            mht_cet_percentile: row.mht_cet_percentile,
+            mht_cet_rank: row.mht_cet_rank,
+            category_rank: row.category_rank,
+            cap_round_allotment: row.cap_round_allotment,
+            previous_gpa: row.previous_gpa,
+            previous_backlogs: row.previous_backlogs,
+            family_income: row.family_income,
+            financial_assistance: row.financial_assistance,
+            guardian_name: row.guardian_name,
+            guardian_mobile: row.guardian_mobile,
+          });
+
+          created.push({
+            student_id: demoStudent.student_id,
+            full_name: demoStudent.full_name,
+            email: demoStudent.email,
+            role: 'student',
+            tempPassword: demoStudent.initialPassword,
+          });
         }
       } catch (err: any) {
         errors.push({
@@ -381,6 +344,7 @@ export class StudentService {
       errors,
     };
   }
+
 
   /**
    * Run initial background predictive assessment using admission variables (Section 6)

@@ -1,53 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth/session';
-
-let NOTIFICATIONS = [
-  {
-    id: 'notif-1',
-    title: 'Faculty Intervention Scheduled',
-    message: 'Dr. Sarah Mitchell has scheduled an academic tutoring follow-up for DBMS Normalization on Friday at 3:00 PM.',
-    type: 'intervention',
-    time: '2 hours ago',
-    read: false,
-    action_url: '/student/support',
-  },
-  {
-    id: 'notif-2',
-    title: 'Attendance Advisory',
-    message: 'Your overall attendance is currently at 69%. Academic regulations require a minimum of 75% for end-semester examinations.',
-    type: 'attendance',
-    time: '1 day ago',
-    read: false,
-    action_url: '/student/attendance',
-  },
-  {
-    id: 'notif-3',
-    title: 'Scholarship Deadline Notice',
-    message: 'Merit-cum-Means Post-Matric Scholarship applications will close in 45 days. Review eligibility and upload income certificate.',
-    type: 'financial',
-    time: '2 days ago',
-    read: false,
-    action_url: '/student/financial',
-  },
-  {
-    id: 'notif-4',
-    title: 'New Course Assignment',
-    message: 'Assignment 1: Relational Schema Normalization Exercise has been posted in DBMS. Due in 7 days.',
-    type: 'learning',
-    time: '3 days ago',
-    read: true,
-    action_url: '/student/learning',
-  },
-  {
-    id: 'notif-5',
-    title: 'New Internship Matching Your Profile',
-    message: 'ThoughtWorks is hiring Full Stack Software Engineering Interns (Open to B.Tech CSE students).',
-    type: 'career',
-    time: '4 days ago',
-    read: true,
-    action_url: '/student/career',
-  },
-];
+import { getDemoStudents } from '@/lib/store/demo-students';
 
 export async function GET() {
   const session = await getSession();
@@ -55,7 +8,60 @@ export async function GET() {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  return NextResponse.json({ notifications: NOTIFICATIONS });
+  const students = getDemoStudents();
+  const normEmail = (session.email || '').toLowerCase().trim();
+
+  const student = students.find(
+    (s) =>
+      (s.email && s.email.toLowerCase().trim() === normEmail) ||
+      s.id === session.entityId ||
+      s.student_id === session.entityId
+  );
+
+  const attendanceRate = student ? (student.attendance_percentage ?? student.attendance_rate ?? 85) : 85;
+
+  const notifications = [
+    {
+      id: 'notif-1',
+      title: 'Faculty Intervention Scheduled',
+      message: 'Dr. Sarah Mitchell has scheduled an academic tutoring follow-up for DBMS Normalization on Friday at 3:00 PM.',
+      type: 'intervention',
+      time: '2 hours ago',
+      read: false,
+      action_url: '/student/support',
+    },
+    {
+      id: 'notif-2',
+      title: attendanceRate < 75 ? 'Attendance Advisory Alert' : 'Attendance Record Standing',
+      message: attendanceRate < 75
+        ? `Your overall attendance is currently at ${attendanceRate}%. Academic regulations require a minimum of 75% for end-semester examinations.`
+        : `Your overall attendance is currently at ${attendanceRate}%, satisfying institutional examination criteria.`,
+      type: 'attendance',
+      time: '1 day ago',
+      read: false,
+      action_url: '/student/attendance',
+    },
+    {
+      id: 'notif-3',
+      title: 'Scholarship Deadline Notice',
+      message: 'EBC / Economically Backward Class tuition fee concessions and merit scholarship applications open for submission.',
+      type: 'financial',
+      time: '2 days ago',
+      read: false,
+      action_url: '/student/financial',
+    },
+    {
+      id: 'notif-4',
+      title: 'New Course Assignment',
+      message: 'Assignment 1: Relational Schema Normalization Exercise has been posted in DBMS.',
+      type: 'learning',
+      time: '3 days ago',
+      read: true,
+      action_url: '/student/learning',
+    },
+  ];
+
+  return NextResponse.json({ notifications });
 }
 
 export async function PATCH(req: Request) {
