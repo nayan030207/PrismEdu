@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "api": ".venv/bin/uvicorn index:app --app-dir api --host 0.0.0.0 --port 8000 --reload",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
