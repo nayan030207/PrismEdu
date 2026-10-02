@@ -36,9 +36,17 @@ export async function PATCH(
       return NextResponse.json({ success: true, intervention: data });
     }
 
+    // Demo store fallback
+    const { updateDemoIntervention } = await import('@/lib/store/demo-interventions');
+    const updated = updateDemoIntervention(interventionId, {
+      ...(status ? { status } : {}),
+      ...(outcome !== undefined ? { outcome } : {}),
+      ...(follow_up_date !== undefined ? { followUpDate: follow_up_date } : {}),
+    });
+
     return NextResponse.json({
       success: true,
-      intervention: {
+      intervention: updated || {
         id: interventionId,
         status: status || 'in_progress',
         outcome: outcome || 'Follow-up completed successfully.',

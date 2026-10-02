@@ -10,6 +10,8 @@ interface DashboardLayoutProps {
   title?: string;
 }
 
+import { cn } from '@/lib/utils';
+
 export function DashboardLayout({
   children,
   role,
@@ -17,7 +19,7 @@ export function DashboardLayout({
   title,
 }: DashboardLayoutProps) {
   return (
-    <div className="flex min-h-screen bg-slate-50/50">
+    <div className="flex min-h-screen bg-slate-50/60 text-slate-800">
       <Sidebar
         role={role}
         userName={user.name}
@@ -27,9 +29,13 @@ export function DashboardLayout({
         <Navbar
           role={role}
           userName={user.name}
+          userEmail={user.email}
           title={title}
         />
-        <main className="flex-1 p-6 md:p-8 max-w-7xl w-full mx-auto">
+        <main className={cn(
+          "flex-1 p-4 md:p-6 w-full mx-auto",
+          role === 'admin' ? "max-w-[1760px]" : "max-w-7xl"
+        )}>
           {children}
         </main>
       </div>

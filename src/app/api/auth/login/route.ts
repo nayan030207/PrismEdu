@@ -19,9 +19,21 @@ const DEMO_USERS: Record<string, { role: UserRole; name: string; entityId: strin
     entityId: 'u0000000-0000-0000-0000-000000000001',
     pass: ['admin123', 'password123', 'password@123', 'passward@123'],
   },
+  'faculty@prismedu.com': {
+    role: 'faculty',
+    name: 'Prof. Sandeep Kulkarni',
+    entityId: 'f1111111-1111-1111-1111-111111111110',
+    pass: ['faculty123', 'password123', 'password@123', 'passward@123'],
+  },
+  'sandeep.kulkarni@prismedu.com': {
+    role: 'faculty',
+    name: 'Prof. Sandeep Kulkarni',
+    entityId: 'f1111111-1111-1111-1111-111111111110',
+    pass: ['faculty123', 'password123', 'password@123', 'passward@123'],
+  },
   'faculty1@prismedu.com': {
     role: 'faculty',
-    name: 'Dr. Sarah Mitchell',
+    name: 'Prof. Sandeep Kulkarni',
     entityId: 'f1111111-1111-1111-1111-111111111111',
     pass: ['faculty123', 'password123', 'password@123', 'passward@123'],
   },
@@ -30,6 +42,54 @@ const DEMO_USERS: Record<string, { role: UserRole; name: string; entityId: strin
     name: 'Prof. David Reynolds',
     entityId: 'f2222222-2222-2222-2222-222222222222',
     pass: ['faculty123', 'password123', 'password@123', 'passward@123'],
+  },
+  'faculty.mech@prismedu.com': {
+    role: 'faculty',
+    name: 'Prof. Rajesh Kulkarni',
+    entityId: 'f1111111-1111-1111-1111-111111111113',
+    pass: ['faculty123', 'password123', 'password@123', 'passward@123'],
+  },
+  'faculty.civil@prismedu.com': {
+    role: 'faculty',
+    name: 'Dr. Sunita Deshmukh',
+    entityId: 'f1111111-1111-1111-1111-111111111114',
+    pass: ['faculty123', 'password123', 'password@123', 'passward@123'],
+  },
+  'student1@prismedu.com': {
+    role: 'student',
+    name: 'Vishal More',
+    entityId: 's-std001',
+    pass: ['student123', 'password123', 'password@123'],
+  },
+  'student2@prismedu.com': {
+    role: 'student',
+    name: 'Aarti Salunkhe',
+    entityId: 's-std002',
+    pass: ['student123', 'password123', 'password@123'],
+  },
+  'student3@prismedu.com': {
+    role: 'student',
+    name: 'Karan Desai',
+    entityId: 's-std003',
+    pass: ['student123', 'password123', 'password@123'],
+  },
+  'student4@prismedu.com': {
+    role: 'student',
+    name: 'Neha Bhosale',
+    entityId: 's-std004',
+    pass: ['student123', 'password123', 'password@123'],
+  },
+  'student5@prismedu.com': {
+    role: 'student',
+    name: 'Rohit Pawar',
+    entityId: 's-std005',
+    pass: ['student123', 'password123', 'password@123'],
+  },
+  'rahul.patil@prismedu.com': {
+    role: 'student',
+    name: 'Rahul Patil',
+    entityId: 's-std006',
+    pass: ['student123', 'password123', 'password@123'],
   },
 };
 

@@ -14,7 +14,73 @@ export interface DemoFaculty {
   status: 'active' | 'inactive';
 }
 
-export const INITIAL_DEMO_FACULTY: DemoFaculty[] = [];
+export const INITIAL_DEMO_FACULTY: DemoFaculty[] = [
+  {
+    id: 'f1111111-1111-1111-1111-111111111111',
+    employee_id: 'FAC-CSE-01',
+    full_name: 'Dr. Sarah Mitchell',
+    email: 'faculty1@prismedu.com',
+    mobile: '+91 9876543210',
+    date_of_birth: '1982-05-14',
+    initialPassword: 'password123',
+    department: 'Computer Engineering',
+    designation: 'Associate Professor & HOD',
+    specialization: 'Database Systems & Machine Learning',
+    status: 'active',
+  },
+  {
+    id: 'f2222222-2222-2222-2222-222222222222',
+    employee_id: 'FAC-IT-02',
+    full_name: 'Prof. David Reynolds',
+    email: 'faculty2@prismedu.com',
+    mobile: '+91 9876543211',
+    date_of_birth: '1985-08-20',
+    initialPassword: 'password123',
+    department: 'Information Technology',
+    designation: 'Assistant Professor',
+    specialization: 'Cloud Computing & Cyber Security',
+    status: 'active',
+  },
+  {
+    id: 'f1111111-1111-1111-1111-111111111113',
+    employee_id: 'FAC-MECH-03',
+    full_name: 'Prof. Rajesh Kulkarni',
+    email: 'faculty.mech@prismedu.com',
+    mobile: '+91 9876543212',
+    date_of_birth: '1979-11-04',
+    initialPassword: 'password123',
+    department: 'Mechanical Engineering',
+    designation: 'Professor & Dean',
+    specialization: 'Thermal Dynamics & CAD/CAM',
+    status: 'active',
+  },
+  {
+    id: 'f1111111-1111-1111-1111-111111111114',
+    employee_id: 'FAC-CIVIL-04',
+    full_name: 'Dr. Sunita Deshmukh',
+    email: 'faculty.civil@prismedu.com',
+    mobile: '+91 9876543213',
+    date_of_birth: '1984-03-29',
+    initialPassword: 'password123',
+    department: 'Civil Engineering',
+    designation: 'Associate Professor',
+    specialization: 'Structural Engineering & Geotech',
+    status: 'active',
+  },
+  {
+    id: 'f1111111-1111-1111-1111-111111111115',
+    employee_id: 'FAC-ECE-05',
+    full_name: 'Dr. Amit Verma',
+    email: 'faculty.ece@prismedu.com',
+    mobile: '+91 9876543214',
+    date_of_birth: '1988-09-12',
+    initialPassword: 'password123',
+    department: 'Electronics Engineering',
+    designation: 'Assistant Professor',
+    specialization: 'Embedded Systems & VLSI',
+    status: 'active',
+  },
+];
 
 declare global {
   // eslint-disable-next-line no-var
