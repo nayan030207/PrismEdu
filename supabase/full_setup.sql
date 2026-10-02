@@ -1038,68 +1038,68 @@ INSERT INTO courses (id, name, code, department_id, duration_years, description)
 -- Hash: $2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi (password123)
 INSERT INTO users (id, email, password_hash, role, status) VALUES
 -- Admin
-('u0000000-0000-0000-0000-000000000001', 'admin@prismedu.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'admin', 'active'),
+('a0000000-0000-0000-0000-000000000001', 'admin@prismedu.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'admin', 'active'),
 -- Faculty
-('u1111111-0000-0000-0000-000000000001', 'faculty1@prismedu.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'faculty', 'active'),
-('u1111111-0000-0000-0000-000000000002', 'faculty2@prismedu.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'faculty', 'active'),
+('a1111111-0000-0000-0000-000000000001', 'faculty1@prismedu.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'faculty', 'active'),
+('a1111111-0000-0000-0000-000000000002', 'faculty2@prismedu.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'faculty', 'active'),
 -- Students
-('u2222222-0000-0000-0000-000000000001', 'student1@prismedu.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'student', 'active'),
-('u2222222-0000-0000-0000-000000000002', 'student2@prismedu.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'student', 'active'),
-('u2222222-0000-0000-0000-000000000003', 'student3@prismedu.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'student', 'active'),
-('u2222222-0000-0000-0000-000000000004', 'student4@prismedu.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'student', 'active'),
-('u2222222-0000-0000-0000-000000000005', 'student5@prismedu.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'student', 'active'),
-('u2222222-0000-0000-0000-000000000006', 'student6@prismedu.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'student', 'active');
+('a2222222-0000-0000-0000-000000000001', 'student1@prismedu.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'student', 'active'),
+('a2222222-0000-0000-0000-000000000002', 'student2@prismedu.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'student', 'active'),
+('a2222222-0000-0000-0000-000000000003', 'student3@prismedu.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'student', 'active'),
+('a2222222-0000-0000-0000-000000000004', 'student4@prismedu.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'student', 'active'),
+('a2222222-0000-0000-0000-000000000005', 'student5@prismedu.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'student', 'active'),
+('a2222222-0000-0000-0000-000000000006', 'student6@prismedu.com', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVKIUi', 'student', 'active');
 
 -- 4. FACULTY PROFILES
 INSERT INTO faculty (id, user_id, employee_id, full_name, email, mobile, department_id, designation, specialization, status) VALUES
-('f1111111-1111-1111-1111-111111111111', 'u1111111-0000-0000-0000-000000000001', 'FAC-CSE-01', 'Dr. Sarah Mitchell', 'faculty1@prismedu.com', '+91 9876543210', 'd1111111-1111-1111-1111-111111111111', 'Associate Professor', 'Database Systems & Machine Learning', 'active'),
-('f2222222-2222-2222-2222-222222222222', 'u1111111-0000-0000-0000-000000000002', 'FAC-IT-02', 'Prof. David Reynolds', 'faculty2@prismedu.com', '+91 9876543211', 'd2222222-2222-2222-2222-222222222222', 'Assistant Professor', 'Computer Networks & Distributed Systems', 'active');
+('f1111111-1111-1111-1111-111111111111', 'a1111111-0000-0000-0000-000000000001', 'FAC-CSE-01', 'Dr. Sarah Mitchell', 'faculty1@prismedu.com', '+91 9876543210', 'd1111111-1111-1111-1111-111111111111', 'Associate Professor', 'Database Systems & Machine Learning', 'active'),
+('f2222222-2222-2222-2222-222222222222', 'a1111111-0000-0000-0000-000000000002', 'FAC-IT-02', 'Prof. David Reynolds', 'faculty2@prismedu.com', '+91 9876543211', 'd2222222-2222-2222-2222-222222222222', 'Assistant Professor', 'Computer Networks & Distributed Systems', 'active');
 
 -- 5. STUDENTS
 INSERT INTO students (id, user_id, student_id, full_name, email, mobile, date_of_birth, gender, course_id, department_id, academic_year, admission_year, faculty_id, status, current_outcome) VALUES
 -- Student 1: Aarav Sharma (Good Standing)
-('s1111111-1111-1111-1111-111111111111', 'u2222222-0000-0000-0000-000000000001', 'STU1021', 'Aarav Sharma', 'student1@prismedu.com', '+91 9123456781', '2004-05-14', 'male', 'c1111111-1111-1111-1111-111111111111', 'd1111111-1111-1111-1111-111111111111', 2, 2023, 'f1111111-1111-1111-1111-111111111111', 'active', 'enrolled'),
+('b1111111-1111-1111-1111-111111111111', 'a2222222-0000-0000-0000-000000000001', 'STU1021', 'Aarav Sharma', 'student1@prismedu.com', '+91 9123456781', '2004-05-14', 'male', 'c1111111-1111-1111-1111-111111111111', 'd1111111-1111-1111-1111-111111111111', 2, 2023, 'f1111111-1111-1111-1111-111111111111', 'active', 'enrolled'),
 -- Student 2: Priya Patel (Attention Required: Academic & Financial)
-('s2222222-2222-2222-2222-222222222222', 'u2222222-0000-0000-0000-000000000002', 'STU1024', 'Priya Patel', 'student2@prismedu.com', '+91 9123456782', '2004-08-22', 'female', 'c1111111-1111-1111-1111-111111111111', 'd1111111-1111-1111-1111-111111111111', 2, 2023, 'f1111111-1111-1111-1111-111111111111', 'active', 'enrolled'),
+('b2222222-2222-2222-2222-222222222222', 'a2222222-0000-0000-0000-000000000002', 'STU1024', 'Priya Patel', 'student2@prismedu.com', '+91 9123456782', '2004-08-22', 'female', 'c1111111-1111-1111-1111-111111111111', 'd1111111-1111-1111-1111-111111111111', 2, 2023, 'f1111111-1111-1111-1111-111111111111', 'active', 'enrolled'),
 -- Student 3: Rohan Gupta (Declining Attendance & Engagement)
-('s3333333-3333-3333-3333-333333333333', 'u2222222-0000-0000-0000-000000000003', 'STU1035', 'Rohan Gupta', 'student3@prismedu.com', '+91 9123456783', '2003-11-09', 'male', 'c1111111-1111-1111-1111-111111111111', 'd1111111-1111-1111-1111-111111111111', 3, 2022, 'f1111111-1111-1111-1111-111111111111', 'active', 'enrolled'),
+('b3333333-3333-3333-3333-333333333333', 'a2222222-0000-0000-0000-000000000003', 'STU1035', 'Rohan Gupta', 'student3@prismedu.com', '+91 9123456783', '2003-11-09', 'male', 'c1111111-1111-1111-1111-111111111111', 'd1111111-1111-1111-1111-111111111111', 3, 2022, 'f1111111-1111-1111-1111-111111111111', 'active', 'enrolled'),
 -- Student 4: Ananya Singh (Career Active, Good Overall)
-('s4444444-4444-4444-4444-444444444444', 'u2222222-0000-0000-0000-000000000004', 'STU1042', 'Ananya Singh', 'student4@prismedu.com', '+91 9123456784', '2004-01-30', 'female', 'c1111111-1111-1111-1111-111111111111', 'd1111111-1111-1111-1111-111111111111', 2, 2023, 'f1111111-1111-1111-1111-111111111111', 'active', 'enrolled'),
+('b4444444-4444-4444-4444-444444444444', 'a2222222-0000-0000-0000-000000000004', 'STU1042', 'Ananya Singh', 'student4@prismedu.com', '+91 9123456784', '2004-01-30', 'female', 'c1111111-1111-1111-1111-111111111111', 'd1111111-1111-1111-1111-111111111111', 2, 2023, 'f1111111-1111-1111-1111-111111111111', 'active', 'enrolled'),
 -- Student 5: Vikram Verma (Critical: Low attendance, backlogs)
-('s5555555-5555-5555-5555-555555555555', 'u2222222-0000-0000-0000-000000000005', 'STU1058', 'Vikram Verma', 'student5@prismedu.com', '+91 9123456785', '2003-03-17', 'male', 'c2222222-2222-2222-2222-222222222222', 'd2222222-2222-2222-2222-222222222222', 3, 2022, 'f2222222-2222-2222-2222-222222222222', 'active', 'enrolled'),
+('b5555555-5555-5555-5555-555555555555', 'a2222222-0000-0000-0000-000000000005', 'STU1058', 'Vikram Verma', 'student5@prismedu.com', '+91 9123456785', '2003-03-17', 'male', 'c2222222-2222-2222-2222-222222222222', 'd2222222-2222-2222-2222-222222222222', 3, 2022, 'f2222222-2222-2222-2222-222222222222', 'active', 'enrolled'),
 -- Student 6: Neha Joshi (Good Standing)
-('s6666666-6666-6666-6666-666666666666', 'u2222222-0000-0000-0000-000000000006', 'STU1063', 'Neha Joshi', 'student6@prismedu.com', '+91 9123456786', '2004-07-11', 'female', 'c2222222-2222-2222-2222-222222222222', 'd2222222-2222-2222-2222-222222222222', 2, 2023, 'f2222222-2222-2222-2222-222222222222', 'active', 'enrolled');
+('b6666666-6666-6666-6666-666666666666', 'a2222222-0000-0000-0000-000000000006', 'STU1063', 'Neha Joshi', 'student6@prismedu.com', '+91 9123456786', '2004-07-11', 'female', 'c2222222-2222-2222-2222-222222222222', 'd2222222-2222-2222-2222-222222222222', 2, 2023, 'f2222222-2222-2222-2222-222222222222', 'active', 'enrolled');
 
 -- 6. ADMISSION PROFILES
 INSERT INTO admission_profiles (student_id, tenth_percentage, twelfth_percentage, previous_gpa, previous_backlogs, family_income, financial_assistance, guardian_name, guardian_relationship, guardian_mobile) VALUES
-('s1111111-1111-1111-1111-111111111111', 89.40, 91.20, 8.75, 0, 850000.00, 'not_required', 'Rajesh Sharma', 'Father', '+91 9811122233'),
-('s2222222-2222-2222-2222-222222222222', 72.50, 68.00, 6.20, 2, 180000.00, 'required', 'Kamlesh Patel', 'Father', '+91 9811122234'),
-('s3333333-3333-3333-3333-333333333333', 78.00, 74.50, 6.90, 1, 420000.00, 'partial', 'Sunil Gupta', 'Father', '+91 9811122235'),
-('s4444444-4444-4444-4444-444444444444', 94.00, 92.50, 9.10, 0, 1200000.00, 'not_required', 'Ashok Singh', 'Father', '+91 9811122236'),
-('s5555555-5555-5555-5555-555555555555', 61.20, 58.40, 5.10, 4, 150000.00, 'required', 'Mahesh Verma', 'Father', '+91 9811122237'),
-('s6666666-6666-6666-6666-666666666666', 86.50, 85.00, 8.40, 0, 650000.00, 'not_required', 'Deepak Joshi', 'Father', '+91 9811122238');
+('b1111111-1111-1111-1111-111111111111', 89.40, 91.20, 8.75, 0, 850000.00, 'not_required', 'Rajesh Sharma', 'Father', '+91 9811122233'),
+('b2222222-2222-2222-2222-222222222222', 72.50, 68.00, 6.20, 2, 180000.00, 'required', 'Kamlesh Patel', 'Father', '+91 9811122234'),
+('b3333333-3333-3333-3333-333333333333', 78.00, 74.50, 6.90, 1, 420000.00, 'partial', 'Sunil Gupta', 'Father', '+91 9811122235'),
+('b4444444-4444-4444-4444-444444444444', 94.00, 92.50, 9.10, 0, 1200000.00, 'not_required', 'Ashok Singh', 'Father', '+91 9811122236'),
+('b5555555-5555-5555-5555-555555555555', 61.20, 58.40, 5.10, 4, 150000.00, 'required', 'Mahesh Verma', 'Father', '+91 9811122237'),
+('b6666666-6666-6666-6666-666666666666', 86.50, 85.00, 8.40, 0, 650000.00, 'not_required', 'Deepak Joshi', 'Father', '+91 9811122238');
 
 -- 7. SUBJECTS
 INSERT INTO subjects (id, course_id, name, code, semester, credits, description) VALUES
-('sub11111-1111-1111-1111-111111111111', 'c1111111-1111-1111-1111-111111111111', 'Database Management Systems', 'CS301', 3, 4, 'Relational model, SQL, normalization, transactions and indexing'),
-('sub22222-2222-2222-2222-222222222222', 'c1111111-1111-1111-1111-111111111111', 'Data Structures and Algorithms', 'CS302', 3, 4, 'Trees, graphs, dynamic programming, sorting and searching algorithms'),
-('sub33333-3333-3333-3333-333333333333', 'c1111111-1111-1111-1111-111111111111', 'Operating Systems', 'CS303', 3, 3, 'Process synchronization, memory management, virtual memory, scheduling'),
-('sub44444-4444-4444-4444-444444444444', 'c1111111-1111-1111-1111-111111111111', 'Computer Networks', 'CS304', 3, 3, 'OSI model, TCP/IP, routing protocols, flow control and security');
+('ee011111-1111-1111-1111-111111111111', 'c1111111-1111-1111-1111-111111111111', 'Database Management Systems', 'CS301', 3, 4, 'Relational model, SQL, normalization, transactions and indexing'),
+('ee022222-2222-2222-2222-222222222222', 'c1111111-1111-1111-1111-111111111111', 'Data Structures and Algorithms', 'CS302', 3, 4, 'Trees, graphs, dynamic programming, sorting and searching algorithms'),
+('ee033333-3333-3333-3333-333333333333', 'c1111111-1111-1111-1111-111111111111', 'Operating Systems', 'CS303', 3, 3, 'Process synchronization, memory management, virtual memory, scheduling'),
+('ee044444-4444-4444-4444-444444444444', 'c1111111-1111-1111-1111-111111111111', 'Computer Networks', 'CS304', 3, 3, 'OSI model, TCP/IP, routing protocols, flow control and security');
 
 -- 8. LEARNING RESOURCES
 INSERT INTO learning_resources (id, subject_id, title, description, type, content_text, duration_minutes, is_active, created_by) VALUES
-('lr111111-1111-1111-1111-111111111111', 'sub11111-1111-1111-1111-111111111111', 'DBMS Lecture Notes - Normalization (1NF to BCNF)', 'Comprehensive guide on database normalization including 1NF, 2NF, 3NF, and Boyce-Codd Normal Form with practical examples.', 'note', 'Normalization is the process of organizing data in a database to reduce data redundancy and improve data integrity. 1NF requires atomic values. 2NF removes partial functional dependencies on candidate keys. 3NF removes transitive functional dependencies. BCNF is a stricter version where for every X -> Y, X must be a super key.', 45, true, 'f1111111-1111-1111-1111-111111111111'),
-('lr222222-2222-2222-2222-222222222222', 'sub11111-1111-1111-1111-111111111111', 'SQL Indexing and Query Optimization Handbook', 'In-depth guide covering B-tree indexes, hash indexing, explain analyze and cost-based query plan analysis.', 'pdf', 'An index is a data structure that improves the speed of data retrieval operations on a database table. B-trees keep data sorted and allow searches, sequential access, insertions, and deletions in logarithmic time.', 60, true, 'f1111111-1111-1111-1111-111111111111'),
-('lr333333-3333-3333-3333-333333333333', 'sub11111-1111-1111-1111-111111111111', 'Video Lecture: ACID Properties and Concurrency Control', 'Video breakdown of Atomicity, Consistency, Isolation, and Durability with 2-Phase Locking examples.', 'video', 'https://www.youtube.com/watch?v=sample-acid', 35, true, 'f1111111-1111-1111-1111-111111111111'),
-('lr444444-4444-4444-4444-444444444444', 'sub22222-2222-2222-2222-222222222222', 'Graph Algorithms Notes: BFS, DFS and Dijkstra', 'Complete study guide for breadth-first search, depth-first search and shortest path calculation.', 'note', 'Graph representation using adjacency matrices and lists. Dijkstra uses a priority queue for single-source shortest paths on non-negative weighted graphs in O((V + E) log V) time.', 50, true, 'f1111111-1111-1111-1111-111111111111');
+('11111111-1111-1111-1111-111111111111', 'ee011111-1111-1111-1111-111111111111', 'DBMS Lecture Notes - Normalization (1NF to BCNF)', 'Comprehensive guide on database normalization including 1NF, 2NF, 3NF, and Boyce-Codd Normal Form with practical examples.', 'note', 'Normalization is the process of organizing data in a database to reduce data redundancy and improve data integrity. 1NF requires atomic values. 2NF removes partial functional dependencies on candidate keys. 3NF removes transitive functional dependencies. BCNF is a stricter version where for every X -> Y, X must be a super key.', 45, true, 'f1111111-1111-1111-1111-111111111111'),
+('11222222-2222-2222-2222-222222222222', 'ee011111-1111-1111-1111-111111111111', 'SQL Indexing and Query Optimization Handbook', 'In-depth guide covering B-tree indexes, hash indexing, explain analyze and cost-based query plan analysis.', 'pdf', 'An index is a data structure that improves the speed of data retrieval operations on a database table. B-trees keep data sorted and allow searches, sequential access, insertions, and deletions in logarithmic time.', 60, true, 'f1111111-1111-1111-1111-111111111111'),
+('11333333-3333-3333-3333-333333333333', 'ee011111-1111-1111-1111-111111111111', 'Video Lecture: ACID Properties and Concurrency Control', 'Video breakdown of Atomicity, Consistency, Isolation, and Durability with 2-Phase Locking examples.', 'video', 'https://www.youtube.com/watch?v=sample-acid', 35, true, 'f1111111-1111-1111-1111-111111111111'),
+('11444444-4444-4444-4444-444444444444', 'ee022222-2222-2222-2222-222222222222', 'Graph Algorithms Notes: BFS, DFS and Dijkstra', 'Complete study guide for breadth-first search, depth-first search and shortest path calculation.', 'note', 'Graph representation using adjacency matrices and lists. Dijkstra uses a priority queue for single-source shortest paths on non-negative weighted graphs in O((V + E) log V) time.', 50, true, 'f1111111-1111-1111-1111-111111111111');
 
 -- 9. ASSIGNMENTS & QUIZZES
 INSERT INTO assignments (id, resource_id, subject_id, title, description, max_marks, due_date, created_by) VALUES
-('as111111-1111-1111-1111-111111111111', 'lr111111-1111-1111-1111-111111111111', 'sub11111-1111-1111-1111-111111111111', 'Assignment 1: Database Schema Normalization Exercise', 'Given a raw relational schema with candidate keys and functional dependencies, decompose it into 3NF and BCNF step by step.', 100, NOW() + INTERVAL '7 days', 'f1111111-1111-1111-1111-111111111111'),
-('as222222-2222-2222-2222-222222222222', 'lr444444-4444-4444-4444-444444444444', 'sub22222-2222-2222-2222-222222222222', 'Assignment 2: Dijkstra Shortest Path Implementation', 'Implement Dijkstra algorithm in C++ or Python and test against the provided benchmark graph datasets.', 100, NOW() + INTERVAL '12 days', 'f1111111-1111-1111-1111-111111111111');
+('a5111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', 'ee011111-1111-1111-1111-111111111111', 'Assignment 1: Database Schema Normalization Exercise', 'Given a raw relational schema with candidate keys and functional dependencies, decompose it into 3NF and BCNF step by step.', 100, NOW() + INTERVAL '7 days', 'f1111111-1111-1111-1111-111111111111'),
+('a5222222-2222-2222-2222-222222222222', '11444444-4444-4444-4444-444444444444', 'ee022222-2222-2222-2222-222222222222', 'Assignment 2: Dijkstra Shortest Path Implementation', 'Implement Dijkstra algorithm in C++ or Python and test against the provided benchmark graph datasets.', 100, NOW() + INTERVAL '12 days', 'f1111111-1111-1111-1111-111111111111');
 
 INSERT INTO quizzes (id, resource_id, subject_id, title, description, total_questions, total_marks, duration_minutes, questions, created_by) VALUES
-('qz111111-1111-1111-1111-111111111111', 'lr111111-1111-1111-1111-111111111111', 'sub11111-1111-1111-1111-111111111111', 'DBMS Normalization & Relational Theory Quiz', 'Test your understanding of functional dependencies, keys, and 1NF through BCNF.', 5, 50, 20,
+('0b111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', 'ee011111-1111-1111-1111-111111111111', 'DBMS Normalization & Relational Theory Quiz', 'Test your understanding of functional dependencies, keys, and 1NF through BCNF.', 5, 50, 20,
 '[
   {"id": "q1", "question": "Which normal form requires eliminating partial functional dependencies on candidate keys?", "options": ["1NF", "2NF", "3NF", "BCNF"], "correct_index": 1, "explanation": "2NF mandates that all non-prime attributes are fully functionally dependent on every candidate key."},
   {"id": "q2", "question": "In 3NF, what kind of functional dependencies are prohibited for non-prime attributes?", "options": ["Trivial", "Transitive", "Multi-valued", "Partial"], "correct_index": 1, "explanation": "3NF requires that no non-prime attribute depends transitively on a candidate key."},
@@ -1112,8 +1112,8 @@ INSERT INTO quizzes (id, resource_id, subject_id, title, description, total_ques
 DO $$
 DECLARE
   dt DATE;
-  s_id UUID := 's2222222-2222-2222-2222-222222222222';
-  sub_id UUID := 'sub11111-1111-1111-1111-111111111111';
+  s_id UUID := 'b2222222-2222-2222-2222-222222222222';
+  sub_id UUID := 'ee011111-1111-1111-1111-111111111111';
   fac_id UUID := 'f1111111-1111-1111-1111-111111111111';
 BEGIN
   FOR i IN 1..30 LOOP
@@ -1136,8 +1136,8 @@ END $$;
 -- 11. STUDENT INSIGHTS (Pre-computed for demo)
 INSERT INTO student_insights (id, student_id, academic_level, attendance_level, financial_level, career_level, support_level, academic_trend, attendance_trend, engagement_trend, quiz_trend, assignment_trend, recent_changes, last_updated) VALUES
 (
-  'in111111-1111-1111-1111-111111111111',
-  's2222222-2222-2222-2222-222222222222', -- Priya Patel (STU1024)
+  '1a111111-1111-1111-1111-111111111111',
+  'b2222222-2222-2222-2222-222222222222', -- Priya Patel (STU1024)
   'attention_required',
   'declining',
   'attention_required',
@@ -1152,8 +1152,8 @@ INSERT INTO student_insights (id, student_id, academic_level, attendance_level, 
   NOW()
 ),
 (
-  'in222222-2222-2222-2222-222222222222',
-  's1111111-1111-1111-1111-111111111111', -- Aarav Sharma (STU1021)
+  '1a222222-2222-2222-2222-222222222222',
+  'b1111111-1111-1111-1111-111111111111', -- Aarav Sharma (STU1021)
   'good',
   'good',
   'good',
@@ -1168,8 +1168,8 @@ INSERT INTO student_insights (id, student_id, academic_level, attendance_level, 
   NOW()
 ),
 (
-  'in333333-3333-3333-3333-333333333333',
-  's5555555-5555-5555-5555-555555555555', -- Vikram Verma (STU1058)
+  '1a333333-3333-3333-3333-333333333333',
+  'b5555555-5555-5555-5555-555555555555', -- Vikram Verma (STU1058)
   'critical',
   'critical',
   'attention_required',
@@ -1186,12 +1186,12 @@ INSERT INTO student_insights (id, student_id, academic_level, attendance_level, 
 
 -- 12. PREDICTIONS (Internal ML model output)
 INSERT INTO predictions (student_id, risk_score, risk_level, features_used) VALUES
-('s1111111-1111-1111-1111-111111111111', 0.12, 'low', '{"gpa": 8.75, "attendance": 94, "backlogs": 0}'::jsonb),
-('s2222222-2222-2222-2222-222222222222', 0.68, 'high', '{"gpa": 6.20, "attendance": 69, "backlogs": 2, "income": 180000}'::jsonb),
-('s3333333-3333-3333-3333-333333333333', 0.44, 'medium', '{"gpa": 6.90, "attendance": 76, "backlogs": 1}'::jsonb),
-('s4444444-4444-4444-4444-444444444444', 0.08, 'low', '{"gpa": 9.10, "attendance": 96, "backlogs": 0}'::jsonb),
-('s5555555-5555-5555-5555-555555555555', 0.84, 'high', '{"gpa": 5.10, "attendance": 47, "backlogs": 4, "income": 150000}'::jsonb),
-('s6666666-6666-6666-6666-666666666666', 0.15, 'low', '{"gpa": 8.40, "attendance": 91, "backlogs": 0}'::jsonb);
+('b1111111-1111-1111-1111-111111111111', 0.12, 'low', '{"gpa": 8.75, "attendance": 94, "backlogs": 0}'::jsonb),
+('b2222222-2222-2222-2222-222222222222', 0.68, 'high', '{"gpa": 6.20, "attendance": 69, "backlogs": 2, "income": 180000}'::jsonb),
+('b3333333-3333-3333-3333-333333333333', 0.44, 'medium', '{"gpa": 6.90, "attendance": 76, "backlogs": 1}'::jsonb),
+('b4444444-4444-4444-4444-444444444444', 0.08, 'low', '{"gpa": 9.10, "attendance": 96, "backlogs": 0}'::jsonb),
+('b5555555-5555-5555-5555-555555555555', 0.84, 'high', '{"gpa": 5.10, "attendance": 47, "backlogs": 4, "income": 150000}'::jsonb),
+('b6666666-6666-6666-6666-666666666666', 0.15, 'low', '{"gpa": 8.40, "attendance": 91, "backlogs": 0}'::jsonb);
 
 -- 13. SCHOLARSHIPS
 INSERT INTO scholarships (name, provider, eligibility, benefits, deadline, required_documents, application_link, min_income, max_income, min_percentage) VALUES
@@ -1314,8 +1314,8 @@ INSERT INTO career_opportunities (type, title, organization, description, requir
 -- 17. INTERVENTIONS (Sample for demo)
 INSERT INTO interventions (id, student_id, faculty_id, type, description, status, follow_up_date, outcome) VALUES
 (
-  'iv111111-1111-1111-1111-111111111111',
-  's2222222-2222-2222-2222-222222222222', -- Priya Patel
+  '1b111111-1111-1111-1111-111111111111',
+  'b2222222-2222-2222-2222-222222222222', -- Priya Patel
   'f1111111-1111-1111-1111-111111111111', -- Dr. Sarah Mitchell
   'academic',
   'Scheduled 1-on-1 tutoring on DBMS Normalization concepts. Provided structured practice worksheets.',
@@ -1324,8 +1324,8 @@ INSERT INTO interventions (id, student_id, faculty_id, type, description, status
   'Student attended first session, completed 2 practice problems with good progress.'
 ),
 (
-  'iv222222-2222-2222-2222-222222222222',
-  's2222222-2222-2222-2222-222222222222',
+  '1b222222-2222-2222-2222-222222222222',
+  'b2222222-2222-2222-2222-222222222222',
   'f1111111-1111-1111-1111-111111111111',
   'financial',
   'Guided student to apply for the Merit-cum-Means Scholarship. Verified necessary documents with student affairs cell.',
@@ -1336,7 +1336,7 @@ INSERT INTO interventions (id, student_id, faculty_id, type, description, status
 
 -- 18. NOTIFICATIONS
 INSERT INTO notifications (user_id, title, message, type, is_read, action_url) VALUES
-('u2222222-0000-0000-0000-000000000002', 'Academic Mentorship Session Scheduled', 'Dr. Sarah Mitchell has scheduled a follow-up review for DBMS on Friday.', 'intervention', false, '/student/support'),
-('u2222222-0000-0000-0000-000000000002', 'Scholarship Deadline Approaching', 'Merit-cum-Means Post-Matric Scholarship application closes in 45 days. Review requirements today.', 'financial', false, '/student/financial'),
-('u2222222-0000-0000-0000-000000000002', 'New Assignment Available', 'Assignment 1: Database Schema Normalization Exercise is due in 7 days.', 'learning', false, '/student/learning'),
-('u1111111-0000-0000-0000-000000000001', 'Student Requires Attention', 'Priya Patel (STU1024) attendance declined to 69%. Academic indicators suggest intervention.', 'alert', false, '/faculty/students/s2222222-2222-2222-2222-222222222222');
+('a2222222-0000-0000-0000-000000000002', 'Academic Mentorship Session Scheduled', 'Dr. Sarah Mitchell has scheduled a follow-up review for DBMS on Friday.', 'intervention', false, '/student/support'),
+('a2222222-0000-0000-0000-000000000002', 'Scholarship Deadline Approaching', 'Merit-cum-Means Post-Matric Scholarship application closes in 45 days. Review requirements today.', 'financial', false, '/student/financial'),
+('a2222222-0000-0000-0000-000000000002', 'New Assignment Available', 'Assignment 1: Database Schema Normalization Exercise is due in 7 days.', 'learning', false, '/student/learning'),
+('a1111111-0000-0000-0000-000000000001', 'Student Requires Attention', 'Priya Patel (STU1024) attendance declined to 69%. Academic indicators suggest intervention.', 'alert', false, '/faculty/students/b2222222-2222-2222-2222-222222222222');

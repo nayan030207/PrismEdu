@@ -4,7 +4,7 @@
     "password": "password123",
     "name": "Institutional Administrator",
     "role": "admin",
-    "user_id": "u0000000-0000-0000-0000-000000000001",
+    "user_id": "a0000000-0000-0000-0000-000000000001",
     "email_verified": true
   },
   {
@@ -12,7 +12,7 @@
     "password": "password123",
     "name": "Prof. Sandeep Kulkarni",
     "role": "faculty",
-    "user_id": "u1111111-0000-0000-0000-000000000000",
+    "user_id": "a1111111-0000-0000-0000-000000000000",
     "email_verified": true
   },
   {
@@ -20,7 +20,7 @@
     "password": "password123",
     "name": "Prof. Sandeep Kulkarni",
     "role": "faculty",
-    "user_id": "u1111111-0000-0000-0000-000000000000",
+    "user_id": "a1111111-0000-0000-0000-000000000000",
     "email_verified": true
   },
   {
@@ -28,7 +28,7 @@
     "password": "password123",
     "name": "Prof. Sandeep Kulkarni",
     "role": "faculty",
-    "user_id": "u1111111-0000-0000-0000-000000000001",
+    "user_id": "a1111111-0000-0000-0000-000000000001",
     "email_verified": true
   },
   {
@@ -36,7 +36,7 @@
     "password": "password123",
     "name": "Prof. David Reynolds",
     "role": "faculty",
-    "user_id": "u1111111-0000-0000-0000-000000000002",
+    "user_id": "a1111111-0000-0000-0000-000000000002",
     "email_verified": true
   },
   {
@@ -44,7 +44,7 @@
     "password": "password123",
     "name": "Prof. Rajesh Kulkarni",
     "role": "faculty",
-    "user_id": "u1111111-0000-0000-0000-000000000003",
+    "user_id": "a1111111-0000-0000-0000-000000000003",
     "email_verified": true
   },
   {
@@ -52,7 +52,7 @@
     "password": "password123",
     "name": "Dr. Sunita Deshmukh",
     "role": "faculty",
-    "user_id": "u1111111-0000-0000-0000-000000000004",
+    "user_id": "a1111111-0000-0000-0000-000000000004",
     "email_verified": true
   },
   {
@@ -60,7 +60,7 @@
     "password": "password123",
     "name": "Vishal More",
     "role": "student",
-    "user_id": "u2222222-0000-0000-0000-000000000001",
+    "user_id": "a2222222-0000-0000-0000-000000000001",
     "email_verified": true
   },
   {
@@ -68,7 +68,7 @@
     "password": "password123",
     "name": "Aarti Salunkhe",
     "role": "student",
-    "user_id": "u2222222-0000-0000-0000-000000000002",
+    "user_id": "a2222222-0000-0000-0000-000000000002",
     "email_verified": true
   },
   {
@@ -76,7 +76,7 @@
     "password": "password123",
     "name": "Karan Desai",
     "role": "student",
-    "user_id": "u2222222-0000-0000-0000-000000000003",
+    "user_id": "a2222222-0000-0000-0000-000000000003",
     "email_verified": true
   },
   {
@@ -84,7 +84,7 @@
     "password": "password123",
     "name": "Neha Bhosale",
     "role": "student",
-    "user_id": "u2222222-0000-0000-0000-000000000004",
+    "user_id": "a2222222-0000-0000-0000-000000000004",
     "email_verified": true
   },
   {
@@ -92,7 +92,7 @@
     "password": "password123",
     "name": "Rohit Pawar",
     "role": "student",
-    "user_id": "u2222222-0000-0000-0000-000000000005",
+    "user_id": "a2222222-0000-0000-0000-000000000005",
     "email_verified": true
   },
   {
@@ -100,7 +100,7 @@
     "password": "password123",
     "name": "Rahul Patil",
     "role": "student",
-    "user_id": "u2222222-0000-0000-0000-000000000006",
+    "user_id": "a2222222-0000-0000-0000-000000000006",
     "email_verified": true
   }
 ]

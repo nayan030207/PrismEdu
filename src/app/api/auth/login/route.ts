@@ -16,7 +16,7 @@ const DEMO_USERS: Record<string, { role: UserRole; name: string; entityId: strin
   'admin@prismedu.com': {
     role: 'admin',
     name: 'Institutional Administrator',
-    entityId: 'u0000000-0000-0000-0000-000000000001',
+    entityId: 'a0000000-0000-0000-0000-000000000001',
     pass: ['admin123', 'password123', 'password@123', 'passward@123'],
   },
   'faculty@prismedu.com': {
