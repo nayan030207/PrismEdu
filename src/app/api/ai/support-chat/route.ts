@@ -4,7 +4,7 @@ import { activityService } from '@/lib/services/activity.service';
 import { generateOpenAIChatCompletion } from '@/lib/services/openai.service';
 import axios from 'axios';
 
-const ML_SERVICE_URL = process.env.ML_SERVICE_URL || 'http://localhost:8000';
+const ML_SERVICE_URL = process.env.ML_SERVICE_URL || (process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL + '/api/py' : 'http://127.0.0.1:3000/api/py');
 
 const SYSTEM_PROMPT = `You are HearMe - A Comfortable place to share concerns, an empathetic student wellness and institutional resource companion for university students. 
 Your goal is to provide compassionate, supportive, non-diagnostic guidance for students experiencing academic stress, exam workload anxiety, or campus life challenges.

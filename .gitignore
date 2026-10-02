@@ -51,3 +51,4 @@ $RECYCLE.BIN/
 !.vscode/launch.json
 !.vscode/extensions.json
 .idea/
+.vercel
