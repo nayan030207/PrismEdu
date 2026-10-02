@@ -5,7 +5,7 @@ import { createSupabaseServiceClient } from '@/lib/supabase/server';
 import { generateOpenAIChatCompletion } from '@/lib/services/openai.service';
 import axios from 'axios';
 
-const ML_SERVICE_URL = process.env.ML_SERVICE_URL || 'http://localhost:8000';
+const ML_SERVICE_URL = process.env.ML_SERVICE_URL || (process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL + '/api/py' : 'http://127.0.0.1:3000/api/py');
 
 const SYSTEM_PROMPT = `You are PRISM Academic AI Tutor, an intelligent, empathetic academic assistant for university computer science and engineering students. 
 Your primary goal is to help students understand complex academic concepts, solve doubts, guide homework/assignment logic, and provide practice exam problems.
