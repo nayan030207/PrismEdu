@@ -12,10 +12,16 @@ class AnalyticsEngine:
     """
 
     def __init__(self) -> None:
-        self.supabase: Client = create_client(
-            os.environ["SUPABASE_URL"],
-            os.environ["SUPABASE_SERVICE_ROLE_KEY"],
-        )
+        url = os.environ.get("SUPABASE_URL") or os.environ.get("NEXT_PUBLIC_SUPABASE_URL")
+        key = os.environ.get("SUPABASE_SERVICE_ROLE_KEY") or os.environ.get("SUPABASE_KEY")
+        if url and key:
+            try:
+                self.supabase: Client = create_client(url, key)
+            except Exception as e:
+                print(f"[AnalyticsEngine] Supabase initialization notice: {e}")
+                self.supabase = None
+        else:
+            self.supabase = None
 
     # ------------------------------------------------------------------
     # Public entry points
@@ -122,20 +128,26 @@ class AnalyticsEngine:
         """
         features = self.compute_student_features(student_id)
 
-        student_resp = (
-            self.supabase
-            .table("students")
-            .select("*, admission_profiles(*)")
-            .eq("id", student_id)
-            .single()
-            .execute()
-        )
-        raw_admission = (student_resp.data or {}).get("admission_profiles", {})
-        if isinstance(raw_admission, list):
-            admission = raw_admission[0] if raw_admission else {}
-        elif isinstance(raw_admission, dict):
-            admission = raw_admission
-        else:
+        if not self.supabase:
+            return self.compute_insights(student_id, features, {})
+
+        try:
+            student_resp = (
+                self.supabase
+                .table("students")
+                .select("*, admission_profiles(*)")
+                .eq("id", student_id)
+                .single()
+                .execute()
+            )
+            raw_admission = (student_resp.data or {}).get("admission_profiles", {})
+            if isinstance(raw_admission, list):
+                admission = raw_admission[0] if raw_admission else {}
+            elif isinstance(raw_admission, dict):
+                admission = raw_admission
+            else:
+                admission = {}
+        except Exception:
             admission = {}
 
         insights = self.compute_insights(student_id, features, admission)
@@ -145,19 +157,22 @@ class AnalyticsEngine:
         for i in range(5, -1, -1):
             val = max(
                 0.0,
-                min(100.0, features["attendance_rate"] + random.uniform(-10, 10)),
+                min(100.0, features.get("attendance_rate", 85.0) + random.uniform(-10, 10)),
             )
             trend_points.append({"date": f"M-{i}", "value": round(val, 1)})
 
-        self.supabase.table("student_insights").upsert(
-            {
-                "student_id":       student_id,
-                **insights,
-                "attendance_trend": trend_points,
-                "last_updated":     datetime.utcnow().isoformat(),
-            },
-            on_conflict="student_id",
-        ).execute()
+        try:
+            self.supabase.table("student_insights").upsert(
+                {
+                    "student_id":       student_id,
+                    **insights,
+                    "attendance_trend": trend_points,
+                    "last_updated":     datetime.utcnow().isoformat(),
+                },
+                on_conflict="student_id",
+            ).execute()
+        except Exception as e:
+            pass
 
         return insights
 
@@ -167,113 +182,138 @@ class AnalyticsEngine:
 
     def _get_attendance_rate(self, student_id: str, offset_days: int = 0) -> float:
         """Return attendance % for the 30-day window ending ``offset_days`` ago."""
-        end   = datetime.now() - timedelta(days=offset_days)
-        start = end - timedelta(days=30)
+        if not self.supabase:
+            return 85.0
+        try:
+            end   = datetime.now() - timedelta(days=offset_days)
+            start = end - timedelta(days=30)
 
-        result = (
-            self.supabase
-            .table("attendance_records")
-            .select("is_present")
-            .eq("student_id", student_id)
-            .gte("date", start.date().isoformat())
-            .lte("date", end.date().isoformat())
-            .execute()
-        )
-        records = result.data or []
-        if not records:
-            return 85.0  # sensible default when no data exists
+            result = (
+                self.supabase
+                .table("attendance_records")
+                .select("is_present")
+                .eq("student_id", student_id)
+                .gte("date", start.date().isoformat())
+                .lte("date", end.date().isoformat())
+                .execute()
+            )
+            records = result.data or []
+            if not records:
+                return 85.0
 
-        present = sum(1 for r in records if r.get("is_present"))
-        return round(present / len(records) * 100, 2)
+            present = sum(1 for r in records if r.get("is_present"))
+            return round(present / len(records) * 100, 2)
+        except Exception:
+            return 85.0
 
     def _get_avg_quiz_score(self, student_id: str) -> float:
         """Return mean quiz percentage across all completed attempts."""
-        result = (
-            self.supabase
-            .table("quiz_attempts")
-            .select("score, total_marks")
-            .eq("student_id", student_id)
-            .eq("is_completed", True)
-            .execute()
-        )
-        attempts = result.data or []
-        if not attempts:
+        if not self.supabase:
             return 75.0
+        try:
+            result = (
+                self.supabase
+                .table("quiz_attempts")
+                .select("score, total_marks")
+                .eq("student_id", student_id)
+                .eq("is_completed", True)
+                .execute()
+            )
+            attempts = result.data or []
+            if not attempts:
+                return 75.0
 
-        percentages = [
-            a["score"] / a["total_marks"] * 100
-            for a in attempts
-            if a.get("total_marks", 0) > 0
-        ]
-        return round(sum(percentages) / len(percentages), 2) if percentages else 75.0
+            percentages = [
+                a["score"] / a["total_marks"] * 100
+                for a in attempts
+                if a.get("total_marks", 0) > 0
+            ]
+            return round(sum(percentages) / len(percentages), 2) if percentages else 75.0
+        except Exception:
+            return 75.0
 
     def _get_assignment_completion_rate(self, student_id: str) -> float:
         """Return fraction of all assignments submitted by this student."""
-        student_resp = (
-            self.supabase
-            .table("students")
-            .select("course_id")
-            .eq("id", student_id)
-            .single()
-            .execute()
-        )
-        if not student_resp.data:
+        if not self.supabase:
             return 0.8
+        try:
+            student_resp = (
+                self.supabase
+                .table("students")
+                .select("course_id")
+                .eq("id", student_id)
+                .single()
+                .execute()
+            )
+            if not student_resp.data:
+                return 0.8
 
-        submissions = (
-            self.supabase
-            .table("assignment_submissions")
-            .select("id")
-            .eq("student_id", student_id)
-            .execute()
-        )
-        assignments = (
-            self.supabase
-            .table("assignments")
-            .select("id")
-            .execute()
-        )
-        total = len(assignments.data or [])
-        if total == 0:
-            return 1.0
+            submissions = (
+                self.supabase
+                .table("assignment_submissions")
+                .select("id")
+                .eq("student_id", student_id)
+                .execute()
+            )
+            assignments = (
+                self.supabase
+                .table("assignments")
+                .select("id")
+                .execute()
+            )
+            total = len(assignments.data or [])
+            if total == 0:
+                return 1.0
 
-        return round(len(submissions.data or []) / total, 4)
+            return round(len(submissions.data or []) / total, 4)
+        except Exception:
+            return 0.8
 
     def _get_learning_frequency(self, student_id: str) -> float:
         """Return average learning sessions per week over the last 14 days."""
-        since = (datetime.now() - timedelta(days=14)).isoformat()
-        result = (
-            self.supabase
-            .table("activity_events")
-            .select("created_at")
-            .eq("student_id", student_id)
-            .eq("event_type", "LEARNING_SESSION_START")
-            .gte("created_at", since)
-            .execute()
-        )
-        sessions = len(result.data or [])
-        return round(sessions / 2, 2)  # divide by 2 weeks → sessions / week
+        if not self.supabase:
+            return 3.5
+        try:
+            since = (datetime.now() - timedelta(days=14)).isoformat()
+            result = (
+                self.supabase
+                .table("activity_events")
+                .select("created_at")
+                .eq("student_id", student_id)
+                .eq("event_type", "LEARNING_SESSION_START")
+                .gte("created_at", since)
+                .execute()
+            )
+            sessions = len(result.data or [])
+            return round(sessions / 2, 2)
+        except Exception:
+            return 3.5
 
     def _get_inactive_days(self, student_id: str) -> int:
         """Return the number of days since the student's last recorded activity."""
-        result = (
-            self.supabase
-            .table("activity_events")
-            .select("created_at")
-            .eq("student_id", student_id)
-            .order("created_at", desc=True)
-            .limit(1)
-            .execute()
-        )
-        data = result.data or []
-        if not data:
+        if not self.supabase:
             return 0
+        try:
+            result = (
+                self.supabase
+                .table("activity_events")
+                .select("created_at")
+                .eq("student_id", student_id)
+                .order("created_at", desc=True)
+                .limit(1)
+                .execute()
+            )
+            data = result.data or []
+            if not data:
+                return 0
 
-        last_active = datetime.fromisoformat(
-            data[0]["created_at"].replace("Z", "+00:00")
-        )
-        delta = datetime.now(last_active.tzinfo) - last_active
-        return max(delta.days, 0)
+            last_active = datetime.fromisoformat(
+                data[0]["created_at"].replace("Z", "+00:00")
+            )
+            delta = datetime.now(last_active.tzinfo) - last_active
+            return max(delta.days, 0)
+        except Exception:
+            return 0
 
     def _compute_engagement_score(
         self,

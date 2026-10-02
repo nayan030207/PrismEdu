@@ -1,9 +1,27 @@
 import os
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+import sys
+
+# Ensure api directory and project root are in sys.path
+api_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(api_dir)
+if api_dir not in sys.path:
+    sys.path.insert(0, api_dir)
+if parent_dir not in sys.path:
+    sys.path.insert(1, parent_dir)
+
 from dotenv import load_dotenv
 
+# Load env variables from root directory
+load_dotenv(os.path.join(parent_dir, ".env.local"))
+load_dotenv(os.path.join(parent_dir, ".env"))
 load_dotenv()
+
+# Normalize Supabase env vars if needed
+if not os.environ.get("SUPABASE_URL") and os.environ.get("NEXT_PUBLIC_SUPABASE_URL"):
+    os.environ["SUPABASE_URL"] = os.environ["NEXT_PUBLIC_SUPABASE_URL"]
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from prediction.model import predictor
 from routers.predict import router as predict_router
@@ -51,4 +69,4 @@ app.include_router(chat_router)
 if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("PORT", 8000))
-    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)
+    uvicorn.run("index:app", host="0.0.0.0", port=port, reload=True)
