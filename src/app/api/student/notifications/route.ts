@@ -1,7 +1,18 @@
 import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth/session';
+import { getDemoStudents } from '@/lib/store/demo-students';
 
-let NOTIFICATIONS = [
+interface NotificationItem {
+  id: string;
+  title: string;
+  message: string;
+  type: string;
+  time: string;
+  read: boolean;
+  action_url: string;
+}
+
+let notificationsStore: NotificationItem[] = [
   {
     id: 'notif-1',
     title: 'Faculty Intervention Scheduled',
@@ -13,8 +24,8 @@ let NOTIFICATIONS = [
   },
   {
     id: 'notif-2',
-    title: 'Attendance Advisory',
-    message: 'Your overall attendance is currently at 69%. Academic regulations require a minimum of 75% for end-semester examinations.',
+    title: 'Attendance Record Standing',
+    message: 'Your overall attendance satisfies institutional examination criteria.',
     type: 'attendance',
     time: '1 day ago',
     read: false,
@@ -23,7 +34,7 @@ let NOTIFICATIONS = [
   {
     id: 'notif-3',
     title: 'Scholarship Deadline Notice',
-    message: 'Merit-cum-Means Post-Matric Scholarship applications will close in 45 days. Review eligibility and upload income certificate.',
+    message: 'EBC / Economically Backward Class tuition fee concessions and merit scholarship applications open for submission.',
     type: 'financial',
     time: '2 days ago',
     read: false,
@@ -32,20 +43,11 @@ let NOTIFICATIONS = [
   {
     id: 'notif-4',
     title: 'New Course Assignment',
-    message: 'Assignment 1: Relational Schema Normalization Exercise has been posted in DBMS. Due in 7 days.',
+    message: 'Assignment 1: Relational Schema Normalization Exercise has been posted in DBMS.',
     type: 'learning',
     time: '3 days ago',
     read: true,
     action_url: '/student/learning',
-  },
-  {
-    id: 'notif-5',
-    title: 'New Internship Matching Your Profile',
-    message: 'ThoughtWorks is hiring Full Stack Software Engineering Interns (Open to B.Tech CSE students).',
-    type: 'career',
-    time: '4 days ago',
-    read: true,
-    action_url: '/student/career',
   },
 ];
 
@@ -55,7 +57,33 @@ export async function GET() {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  return NextResponse.json({ notifications: NOTIFICATIONS });
+  const students = getDemoStudents();
+  const normEmail = (session.email || '').toLowerCase().trim();
+
+  const student = students.find(
+    (s) =>
+      (s.email && s.email.toLowerCase().trim() === normEmail) ||
+      s.id === session.entityId ||
+      s.student_id === session.entityId
+  );
+
+  const attendanceRate = student ? (student.attendance_percentage ?? student.attendance_rate ?? 85) : 85;
+
+  const list = notificationsStore.map((n) => {
+    if (n.id === 'notif-2') {
+      return {
+        ...n,
+        title: attendanceRate < 75 ? 'Attendance Advisory Alert' : 'Attendance Record Standing',
+        message:
+          attendanceRate < 75
+            ? `Your overall attendance is currently at ${attendanceRate}%. Academic regulations require a minimum of 75% for end-semester examinations.`
+            : `Your overall attendance is currently at ${attendanceRate}%, satisfying institutional examination criteria.`,
+      };
+    }
+    return n;
+  });
+
+  return NextResponse.json({ notifications: list });
 }
 
 export async function PATCH(req: Request) {
@@ -68,14 +96,14 @@ export async function PATCH(req: Request) {
     const { notification_id, mark_all } = await req.json();
 
     if (mark_all) {
-      NOTIFICATIONS = NOTIFICATIONS.map((n) => ({ ...n, read: true }));
+      notificationsStore = notificationsStore.map((n) => ({ ...n, read: true }));
     } else if (notification_id) {
-      NOTIFICATIONS = NOTIFICATIONS.map((n) =>
+      notificationsStore = notificationsStore.map((n) =>
         n.id === notification_id ? { ...n, read: true } : n
       );
     }
 
-    return NextResponse.json({ success: true, notifications: NOTIFICATIONS });
+    return NextResponse.json({ success: true, notifications: notificationsStore });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }

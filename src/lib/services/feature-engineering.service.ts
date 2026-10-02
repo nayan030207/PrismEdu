@@ -130,6 +130,19 @@ export class FeatureEngineeringService {
   }
 
   /**
+   * Clear cached feature snapshot for a specific student or all students
+   */
+  clearSnapshotCache(studentId?: string) {
+    if (globalThis.__PRISM_FEATURE_SNAPSHOTS) {
+      if (studentId) {
+        globalThis.__PRISM_FEATURE_SNAPSHOTS.delete(studentId);
+      } else {
+        globalThis.__PRISM_FEATURE_SNAPSHOTS.clear();
+      }
+    }
+  }
+
+  /**
    * Get latest feature snapshot for a student
    */
   async getLatestSnapshot(studentId: string): Promise<FeatureSnapshot> {
@@ -142,3 +155,4 @@ export class FeatureEngineeringService {
 }
 
 export const featureEngineeringService = new FeatureEngineeringService();
+

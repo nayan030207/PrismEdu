@@ -9,51 +9,60 @@ export async function GET() {
   }
 
   const students = getDemoStudents();
-  const currentStudent =
+  const normEmail = (session.email || '').toLowerCase().trim();
+
+  const student =
     students.find(
       (s) =>
-        s.email?.toLowerCase().trim() === session.email?.toLowerCase().trim() ||
+        (s.email && s.email.toLowerCase().trim() === normEmail) ||
         s.id === session.entityId ||
+        s.student_id === session.entityId ||
         s.full_name?.toLowerCase() === session.name?.toLowerCase()
     ) || students[0];
 
-  const overallRate = currentStudent.attendance_rate ?? currentStudent.attendance_percentage ?? 78;
-  const totalClasses = 120;
-  const attendedClasses = Math.round((overallRate / 100) * totalClasses);
-  const missedClasses = totalClasses - attendedClasses;
+  const overallRate = student.attendance_percentage ?? student.attendance_rate ?? 78;
+  const previousRate = Math.min(100, Math.max(40, overallRate + (overallRate < 75 ? 12 : -3)));
+  const rateChange = overallRate - previousRate;
+
+  const totalClasses = 60;
+  const attendedClasses = Math.round(totalClasses * (overallRate / 100));
+  const missedClasses = Math.max(0, totalClasses - attendedClasses);
+
+  const sub1Rate = Math.min(100, Math.max(30, overallRate - 3));
+  const sub2Rate = Math.min(100, Math.max(30, overallRate + 4));
+  const sub3Rate = Math.min(100, Math.max(30, overallRate - 1));
 
   const attendanceData = {
     overallRate,
-    previousRate: Math.min(100, overallRate + 6),
-    rateChange: -6,
-    statusIndicator: overallRate < 65 ? 'Critical Deficit' : overallRate < 75 ? 'Warning (<75%)' : 'Good Standing',
+    previousRate,
+    rateChange,
+    statusIndicator: overallRate < 65 ? 'Critical Deficit' : overallRate < 75 ? 'Attendance Decline' : 'Good Standing',
     totalClasses,
     attendedClasses,
     missedClasses,
     subjectBreakdown: [
-      { subject: 'Applied Core Theory', attended: Math.round(attendedClasses * 0.35), total: 40, percentage: overallRate },
-      { subject: 'Laboratory & Practical', attended: Math.round(attendedClasses * 0.25), total: 30, percentage: Math.max(40, overallRate - 4) },
-      { subject: 'Engineering Workshop', attended: Math.round(attendedClasses * 0.22), total: 25, percentage: Math.min(95, overallRate + 5) },
-      { subject: 'Tutorial & Problem Session', attended: Math.round(attendedClasses * 0.18), total: 25, percentage: overallRate },
+      { subjectName: 'Database Management Systems', code: 'CS301', totalClasses: 20, attended: Math.round(20 * (sub1Rate / 100)), rate: sub1Rate },
+      { subjectName: 'Data Structures and Algorithms', code: 'CS302', totalClasses: 20, attended: Math.round(20 * (sub2Rate / 100)), rate: sub2Rate },
+      { subjectName: 'Operating Systems', code: 'CS303', totalClasses: 20, attended: Math.round(20 * (sub3Rate / 100)), rate: sub3Rate },
     ],
     weeklyTrend: [
-      { week: 'Week 1', rate: Math.min(100, overallRate + 8) },
-      { week: 'Week 2', rate: Math.min(100, overallRate + 5) },
-      { week: 'Week 3', rate: overallRate },
+      { week: 'Week 1', rate: Math.min(100, previousRate + 5) },
+      { week: 'Week 2', rate: previousRate },
+      { week: 'Week 3', rate: Math.round((previousRate + overallRate) / 2) },
       { week: 'Week 4', rate: overallRate },
     ],
     engagementMetrics: {
       lastLogin: 'Today, 09:15 AM',
-      learningSessionsThisWeek: 6,
-      resourcesAccessedThisMonth: 18,
+      learningSessionsThisWeek: 5,
+      resourcesAccessedThisMonth: 14,
       activeStreakDays: overallRate > 70 ? 4 : 1,
-      assignmentCompletionRate: currentStudent.academic_backlogs ? 70 : 92,
-      quizParticipationRate: 85,
+      assignmentCompletionRate: student.academic_backlogs ? 70 : 88,
+      quizParticipationRate: 90,
     },
     institutionalThresholdNotice:
       overallRate < 75
-        ? 'Notice: Your current attendance is below the institutional requirement of 75%. Please contact your faculty mentor.'
-        : 'Good job: You are above the mandatory institutional 75% attendance threshold.',
+        ? `Institutional Advisory: Your overall attendance is currently at ${overallRate}%. Academic regulations require a minimum of 75% attendance for end-semester examinations.`
+        : 'Good Standing: Your attendance satisfies institutional examination requirements (>= 75%).',
   };
 
   return NextResponse.json(attendanceData);

@@ -195,6 +195,19 @@ export class PredictiveMlService {
   }
 
   /**
+   * Clear cached prediction for a specific student or all students
+   */
+  clearPredictionCache(studentId?: string) {
+    if (globalThis.__PRISM_PREDICTIONS_DB) {
+      if (studentId) {
+        globalThis.__PRISM_PREDICTIONS_DB.delete(studentId);
+      } else {
+        globalThis.__PRISM_PREDICTIONS_DB.clear();
+      }
+    }
+  }
+
+  /**
    * Get latest prediction for a student
    */
   async getLatestPrediction(studentId: string): Promise<RiskPrediction> {
@@ -207,3 +220,4 @@ export class PredictiveMlService {
 }
 
 export const predictiveMlService = new PredictiveMlService();
+
