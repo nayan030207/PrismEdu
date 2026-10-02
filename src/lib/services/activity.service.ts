@@ -10,7 +10,7 @@ export interface TrackEventPayload {
 }
 
 export class ActivityService {
-  private mlServiceUrl = process.env.ML_SERVICE_URL || (process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL + '/api/py' : 'http://127.0.0.1:3000/api/py');
+  private mlServiceUrl = process.env.ML_SERVICE_URL || 'http://localhost:8000';
 
   /**
    * Log a student interaction event to the centralized activity_events system

@@ -90,7 +90,7 @@ export async function syncUserToSupabaseAuth(email: string, password: string, fu
 }
 
 export class StudentService {
-  private mlServiceUrl = process.env.ML_SERVICE_URL || (process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL + '/api/py' : 'http://127.0.0.1:3000/api/py');
+  private mlServiceUrl = process.env.ML_SERVICE_URL || 'http://localhost:8000';
 
   /**
    * Method 1: Manual Student Entry (Section 4 & 5)
