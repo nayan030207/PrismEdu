@@ -72,7 +72,8 @@ const FIELD_ALIASES: Record<string, string[]> = {
   family_income: ['family_income', 'annual_income', 'income', 'parent_income', 'family_annual_income'],
   financial_assistance: ['financial_assistance', 'scholarship', 'need_scholarship', 'financial_aid', 'assistance_required'],
   guardian_name: ['guardian_name', 'father_name', 'parent_name', 'mother_name', 'father_s_name', 'guardian', 'parent_guardian_name'],
-  guardian_mobile: ['guardian_mobile', 'parent_mobile', 'father_mobile', 'parent_contact', 'guardian_phone', 'parent_phone']
+  guardian_mobile: ['guardian_mobile', 'parent_mobile', 'father_mobile', 'parent_contact', 'guardian_phone', 'parent_phone'],
+  attendance_percentage: ['attendance_percentage', 'attendance', 'attendance_rate', 'att_%', 'attendance_%', 'attendance_percent'],
 };
 
 export function resolveHeaderTag(rawTag: string): { resolvedField: string | null; matched: boolean; normalizedTag: string } {
@@ -221,6 +222,7 @@ const StudentRowSchema = z.object({
   financial_assistance: z.string().optional().default('not_required'),
   guardian_name: z.string().optional().default(''),
   guardian_mobile: z.string().optional().default(''),
+  attendance_percentage: z.coerce.number().min(0).max(100).optional().default(85),
 });
 
 export class ImportService {

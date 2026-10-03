@@ -6,12 +6,12 @@ import { createSupabaseServiceClient, createSupabaseAdminClient } from '@/lib/su
 import type { SessionUser, UserRole } from '@/lib/types';
 
 const LoginSchema = z.object({
-  email: z.string().email('Invalid email address'),
+  email: z.string().min(1, 'Email or Student ID is required'),
   password: z.string().min(1, 'Password is required'),
   role: z.enum(['admin', 'faculty', 'student']).optional(),
 });
 
-// Built-in demo accounts for instant review & hackathon evaluation
+// Built-in administrative & faculty evaluation accounts
 const DEMO_USERS: Record<string, { role: UserRole; name: string; entityId: string; pass: string[] }> = {
   'admin@prismedu.com': {
     role: 'admin',
@@ -55,42 +55,6 @@ const DEMO_USERS: Record<string, { role: UserRole; name: string; entityId: strin
     entityId: 'f1111111-1111-1111-1111-111111111114',
     pass: ['faculty123', 'password123', 'password@123', 'passward@123'],
   },
-  'student1@prismedu.com': {
-    role: 'student',
-    name: 'Vishal More',
-    entityId: 's-std001',
-    pass: ['student123', 'password123', 'password@123'],
-  },
-  'student2@prismedu.com': {
-    role: 'student',
-    name: 'Aarti Salunkhe',
-    entityId: 's-std002',
-    pass: ['student123', 'password123', 'password@123'],
-  },
-  'student3@prismedu.com': {
-    role: 'student',
-    name: 'Karan Desai',
-    entityId: 's-std003',
-    pass: ['student123', 'password123', 'password@123'],
-  },
-  'student4@prismedu.com': {
-    role: 'student',
-    name: 'Neha Bhosale',
-    entityId: 's-std004',
-    pass: ['student123', 'password123', 'password@123'],
-  },
-  'student5@prismedu.com': {
-    role: 'student',
-    name: 'Rohit Pawar',
-    entityId: 's-std005',
-    pass: ['student123', 'password123', 'password@123'],
-  },
-  'rahul.patil@prismedu.com': {
-    role: 'student',
-    name: 'Rahul Patil',
-    entityId: 's-std006',
-    pass: ['student123', 'password123', 'password@123'],
-  },
 };
 
 export async function POST(req: Request) {
@@ -105,8 +69,24 @@ export async function POST(req: Request) {
       );
     }
 
-    const { email, password, role: requestedRole } = parsed.data;
-    const normalizedEmail = email.toLowerCase().trim();
+    const { email: inputIdentifier, password, role: requestedRole } = parsed.data;
+    let normalizedEmail = inputIdentifier.toLowerCase().trim();
+
+    // Support logging in via Student ID (e.g. STU1001) as well as email address
+    if (!normalizedEmail.includes('@')) {
+      try {
+        const { getDemoStudents } = require('@/lib/store/demo-students');
+        const matched = getDemoStudents().find(
+          (s: any) => s.student_id?.toLowerCase().trim() === normalizedEmail
+        );
+        if (matched?.email) {
+          normalizedEmail = matched.email.toLowerCase().trim();
+        }
+      } catch {
+        // ignore
+      }
+    }
+
 
     let userSession: SessionUser | null = null;
 

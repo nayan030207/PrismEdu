@@ -497,6 +497,7 @@ export interface StudentImportRow {
   financial_assistance?: string;
   guardian_name?: string;
   guardian_mobile?: string;
+  attendance_percentage?: number;
 }
 
 export interface ImportError {

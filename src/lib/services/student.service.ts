@@ -128,6 +128,34 @@ export class StudentService {
       throw new Error(`Failed to create student user account: ${userError?.message || 'Unknown error'}`);
     }
 
+    // Resolve foreign keys for department & course
+    const deptMap: Record<string, string> = {
+      CSE: 'd1111111-1111-1111-1111-111111111111',
+      IT: 'd2222222-2222-2222-2222-222222222222',
+      ECE: 'd3333333-3333-3333-3333-333333333333',
+      MECH: 'd4444444-4444-4444-4444-444444444444',
+      CIVIL: 'd5555555-5555-5555-5555-555555555555',
+      AIDS: 'd6666666-6666-6666-6666-666666666666',
+    };
+
+    const courseMap: Record<string, string> = {
+      'BTECH-CSE': 'c1111111-1111-1111-1111-111111111111',
+      'BTECH-IT': 'c2222222-2222-2222-2222-222222222222',
+      'BTECH-MECH': 'c3333333-3333-3333-3333-333333333333',
+      'BTECH-CIVIL': 'c4444444-4444-4444-4444-444444444444',
+      'BTECH-AIDS': 'c5555555-5555-5555-5555-555555555555',
+      'BTECH-ECE': 'c6666666-6666-6666-6666-666666666666',
+    };
+
+    const validFacultyList = [
+      'f1111111-1111-1111-1111-111111111111',
+      'f2222222-2222-2222-2222-222222222222',
+    ];
+
+    const resolvedDeptId = deptMap[input.department_id || ''] || (input.department_id?.includes('-') ? input.department_id : deptMap.CSE);
+    const resolvedCourseId = courseMap[input.course_id || ''] || (input.course_id?.includes('-') ? input.course_id : courseMap['BTECH-CSE']);
+    const resolvedFacultyId = validFacultyList.includes(input.faculty_id || '') ? input.faculty_id : validFacultyList[0];
+
     // 4. Create student profile linked to faculty & user
     const { data: newStudent, error: studentError } = await supabase
       .from('students')
@@ -139,11 +167,11 @@ export class StudentService {
         mobile: input.mobile,
         date_of_birth: input.date_of_birth,
         gender: input.gender,
-        course_id: input.course_id,
-        department_id: input.department_id,
+        course_id: resolvedCourseId,
+        department_id: resolvedDeptId,
         academic_year: input.academic_year || 1,
         admission_year: input.admission_year || new Date().getFullYear(),
-        faculty_id: input.faculty_id,
+        faculty_id: resolvedFacultyId,
         status: 'active',
         current_outcome: 'enrolled',
       })
@@ -183,9 +211,21 @@ export class StudentService {
       guardian_mobile: input.guardian_mobile,
       guardian_email: input.guardian_email,
       guardian_occupation: input.guardian_occupation,
-    });
+    }).catch(() => {});
 
-    // 6. Trigger initial predictive assessment & initial insights
+    // 6. Create initial student insights record
+    const acadLevel = (input.previous_backlogs && input.previous_backlogs > 0) ? 'attention_required' : 'good';
+    const finLevel = (input.family_income && input.family_income < 50000) ? 'attention_required' : 'good';
+    await supabase.from('student_insights').insert({
+      student_id: newStudent.id,
+      academic_level: acadLevel,
+      attendance_level: 'good',
+      financial_level: finLevel,
+      career_level: 'good',
+      support_level: 'good',
+    }).catch(() => {});
+
+    // 7. Trigger initial predictive assessment & initial insights
     await this.triggerInitialPredictiveAssessment(newStudent.id, {
       tenth_percentage: input.tenth_percentage,
       twelfth_percentage: input.twelfth_percentage,
@@ -258,6 +298,8 @@ export class StudentService {
               gender: row.gender as any,
               academic_year: row.academic_year,
               admission_year: row.admission_year,
+              course_id: row.course_code,
+              department_id: row.department_code,
               tenth_school_name: row.tenth_school_name,
               tenth_board: row.tenth_board,
               tenth_passing_year: row.tenth_passing_year,
@@ -318,6 +360,7 @@ export class StudentService {
             financial_assistance: row.financial_assistance,
             guardian_name: row.guardian_name,
             guardian_mobile: row.guardian_mobile,
+            attendance_percentage: row.attendance_percentage,
           });
 
           created.push({

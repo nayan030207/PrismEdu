@@ -54,53 +54,6 @@
     "role": "faculty",
     "user_id": "a1111111-0000-0000-0000-000000000004",
     "email_verified": true
-  },
-  {
-    "email": "student1@prismedu.com",
-    "password": "password123",
-    "name": "Vishal More",
-    "role": "student",
-    "user_id": "a2222222-0000-0000-0000-000000000001",
-    "email_verified": true
-  },
-  {
-    "email": "student2@prismedu.com",
-    "password": "password123",
-    "name": "Aarti Salunkhe",
-    "role": "student",
-    "user_id": "a2222222-0000-0000-0000-000000000002",
-    "email_verified": true
-  },
-  {
-    "email": "student3@prismedu.com",
-    "password": "password123",
-    "name": "Karan Desai",
-    "role": "student",
-    "user_id": "a2222222-0000-0000-0000-000000000003",
-    "email_verified": true
-  },
-  {
-    "email": "student4@prismedu.com",
-    "password": "password123",
-    "name": "Neha Bhosale",
-    "role": "student",
-    "user_id": "a2222222-0000-0000-0000-000000000004",
-    "email_verified": true
-  },
-  {
-    "email": "student5@prismedu.com",
-    "password": "password123",
-    "name": "Rohit Pawar",
-    "role": "student",
-    "user_id": "a2222222-0000-0000-0000-000000000005",
-    "email_verified": true
-  },
-  {
-    "email": "rahul.patil@prismedu.com",
-    "password": "password123",
-    "name": "Rahul Patil",
-    "role": "student",
-    "user_id": "a2222222-0000-0000-0000-000000000006",
-    "email_verified": true
   }
 ]
+

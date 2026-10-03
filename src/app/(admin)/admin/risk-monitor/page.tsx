@@ -20,86 +20,31 @@ import {
 export default function RiskMonitorPage() {
   const [search, setSearch] = React.useState('');
   const [filterDept, setFilterDept] = React.useState('all');
+  const [monitoredStudents, setMonitoredStudents] = React.useState<any[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
 
-  const monitoredStudents = [
-    {
-      id: 'STD001',
-      name: 'Vishal More',
-      dept: 'Mechanical Engineering',
-      attendance: 52,
-      cgpa: 5.8,
-      riskScore: 82,
-      trend: '+18%',
-      status: 'Critical Attention',
-      driver: 'Attendance drop < 55% & 2 Backlogs',
-    },
-    {
-      id: 'STD002',
-      name: 'Aarti Salunkhe',
-      dept: 'Information Technology',
-      attendance: 61,
-      cgpa: 6.2,
-      riskScore: 78,
-      trend: '+15%',
-      status: 'High Risk',
-      driver: 'Recent test score slump',
-    },
-    {
-      id: 'STD003',
-      name: 'Karan Desai',
-      dept: 'Civil Engineering',
-      attendance: 48,
-      cgpa: 5.4,
-      riskScore: 76,
-      trend: '+21%',
-      status: 'Critical Attention',
-      driver: 'Prolonged absenteeism & overdue fees',
-    },
-    {
-      id: 'STD004',
-      name: 'Neha Bhosale',
-      dept: 'Computer Engineering',
-      attendance: 59,
-      cgpa: 6.8,
-      riskScore: 72,
-      trend: '+14%',
-      status: 'High Risk',
-      driver: 'Attendance warning & mentor flag',
-    },
-    {
-      id: 'STD005',
-      name: 'Rohit Pawar',
-      dept: 'Electronics Engineering',
-      attendance: 63,
-      cgpa: 7.1,
-      riskScore: 68,
-      trend: '+12%',
-      status: 'Moderate Risk',
-      driver: 'Sudden engagement decline in lab',
-    },
-    {
-      id: 'STD006',
-      name: 'Rahul Patil',
-      dept: 'Information Technology',
-      attendance: 68,
-      cgpa: 6.5,
-      riskScore: 68,
-      trend: '+23%',
-      status: 'Emerging Risk',
-      driver: 'Risk probability surged 23 pts',
-    },
-    {
-      id: 'STD007',
-      name: 'Sneha Jadhav',
-      dept: 'Computer Engineering',
-      attendance: 65,
-      cgpa: 7.0,
-      riskScore: 65,
-      trend: '+21%',
-      status: 'Emerging Risk',
-      driver: 'Consecutive assignment misses',
-    },
-  ];
+  React.useEffect(() => {
+    fetch('/api/admin/dashboard/full-metrics')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.attentionStudents && data.attentionStudents.length > 0) {
+          const mapped = data.attentionStudents.map((s: any, idx: number) => ({
+            id: s.id?.slice(0, 8) || `STD${idx + 1}`,
+            name: s.name,
+            dept: s.department || 'Engineering',
+            attendance: parseInt(String(s.attendance || '75'), 10),
+            cgpa: parseFloat(String(s.cgpa || '7.0')),
+            riskScore: s.riskScoreNum || parseInt(String(s.riskScore || '50'), 10),
+            trend: s.trend || '+5%',
+            status: s.riskScoreNum >= 80 ? 'Critical Attention' : s.riskScoreNum >= 60 ? 'High Risk' : 'Moderate Risk',
+            driver: s.attendanceWarn ? 'Low attendance & risk indicator elevation' : 'Cohort predictive risk threshold',
+          }));
+          setMonitoredStudents(mapped);
+        }
+        setIsLoading(false);
+      })
+      .catch(() => setIsLoading(false));
+  }, []);
 
   const filtered = monitoredStudents.filter((s) => {
     const matchesSearch =
